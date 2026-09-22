@@ -6,7 +6,16 @@
   <meta name="referrer" content="no-referrer">
   <title>통합 블로그 허브</title>
 
+  <!-- [링크 공유 시 대표 이미지 메타태그 (랜덤 썸네일 적용 대상)] -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="통합 블로그 허브">
+  <meta property="og:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
+  <meta property="og:image" id="og-image" content="https://cdn-icons-png.flaticon.com/512/3959/3959542.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" id="twitter-image" content="https://cdn-icons-png.flaticon.com/512/3959/3959542.png">
+
   <!-- [구글 애드센스 승인/연동 코드 위치] -->
+  <!-- 승인 신청 시 주석(<!-- -->)을 제거하고 본인 ca-pub 코드를 넣으세요 -->
   <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
 
   <!-- 프리텐다드 웹폰트 -->
@@ -27,9 +36,7 @@
       --shadow-lg: 0 10px 20px -5px rgba(37, 99, 235, 0.2);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
@@ -47,7 +54,7 @@
       margin: 0 auto;
     }
 
-    /* 애드센스 영역 */
+    /* 애드센스 광고 영역 */
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
@@ -115,25 +122,13 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* 스크롤바 디자인 */
-    .post-list-scroll::-webkit-scrollbar {
-      height: 6px;
-    }
-    .post-list-scroll::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 10px;
-    }
-    .post-list-scroll::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 10px;
-    }
-    .post-list-scroll::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
+    .post-list-scroll::-webkit-scrollbar { height: 6px; }
+    .post-list-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+    .post-list-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    /* 컴팩트형 카드 디자인 */
+    /* 컴팩트 미니 카드 */
     .post-card-mini {
-      flex: 0 0 160px; /* 카드 폭을 160px로 고정해 아담하게 설정 */
+      flex: 0 0 160px;
       background: #ffffff;
       border: 1px solid #f1f5f9;
       border-radius: 12px;
@@ -166,9 +161,7 @@
       transition: transform 0.3s ease;
     }
 
-    .post-card-mini:hover .post-thumb-mini {
-      transform: scale(1.05);
-    }
+    .post-card-mini:hover .post-thumb-mini { transform: scale(1.05); }
 
     .post-content-mini {
       padding: 10px;
@@ -188,7 +181,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      height: 35px; /* 제목 2줄 높이 고정 */
+      height: 35px;
     }
 
     .post-date-mini {
@@ -198,7 +191,6 @@
       margin-top: 4px;
     }
 
-    /* 로딩 스타일 */
     .loading {
       text-align: center;
       color: var(--text-sub);
@@ -208,18 +200,10 @@
     }
 
     @media (max-width: 640px) {
-      body {
-        padding: 15px 10px;
-      }
-      .blog-section {
-        padding: 15px;
-      }
-      .post-card-mini {
-        flex: 0 0 140px; /* 모바일에서는 더 아담하게 */
-      }
-      .post-thumb-wrapper-mini {
-        height: 95px;
-      }
+      body { padding: 15px 10px; }
+      .blog-section { padding: 15px; }
+      .post-card-mini { flex: 0 0 140px; }
+      .post-thumb-wrapper-mini { height: 95px; }
     }
   </style>
 </head>
@@ -273,6 +257,8 @@
 </div>
 
 <script>
+  let allThumbnails = [];
+
   window.onload = function() {
     loadBlogRSS('blogforyou_', 'posts-blog1');
     loadBlogRSS('727--', 'posts-blog2');
@@ -294,7 +280,7 @@
           return;
         }
 
-        const posts = data.items.slice(0, 8); // 가로 스크롤에 맞게 최신글 8개까지 노출
+        const posts = data.items.slice(0, 8);
 
         posts.forEach(post => {
           let imageUrl = '';
@@ -306,13 +292,15 @@
             const imgMatch = post.description.match(/<img[^>]+src=["']([^"']+)["']/i);
             if (imgMatch && imgMatch[1]) {
               imageUrl = imgMatch[1];
-            } else {
-              imageUrl = 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png';
             }
           }
 
-          if (imageUrl.includes('postfiles.naver.net') || imageUrl.includes('blogfiles.naver.net')) {
+          if (imageUrl && (imageUrl.includes('postfiles.naver.net') || imageUrl.includes('blogfiles.naver.net'))) {
             imageUrl = 'https://search.pstatic.net/common/?src=' + encodeURIComponent(imageUrl);
+          }
+
+          if (imageUrl) {
+            allThumbnails.push(imageUrl);
           }
 
           const pubDate = new Date(post.pubDate);
@@ -324,7 +312,7 @@
 
           card.innerHTML = `
             <div class="post-thumb-wrapper-mini">
-              <img class="post-thumb-mini" src="${imageUrl}" referrerpolicy="no-referrer" alt="썸네일" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3959/3959542.png'">
+              <img class="post-thumb-mini" src="${imageUrl || 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png'}" referrerpolicy="no-referrer" alt="썸네일" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3959/3959542.png'">
             </div>
             <div class="post-content-mini">
               <div class="post-title-mini" title="${post.title}">${post.title}</div>
@@ -333,11 +321,27 @@
           `;
           container.appendChild(card);
         });
+
+        // 썸네일 수집 후 랜덤으로 1개 선택하여 대표 이미지 변경
+        setRandomOgImage();
       })
       .catch(err => {
         const container = document.getElementById(containerId);
         container.innerHTML = '<div class="loading">불러오기 실패</div>';
       });
+  }
+
+  function setRandomOgImage() {
+    if (allThumbnails.length > 0) {
+      const randomIndex = Math.floor(Math.random() * allThumbnails.length);
+      const selectedImage = allThumbnails[randomIndex];
+
+      const ogImg = document.getElementById('og-image');
+      const twitterImg = document.getElementById('twitter-image');
+
+      if (ogImg) ogImg.setAttribute('content', selectedImage);
+      if (twitterImg) twitterImg.setAttribute('content', selectedImage);
+    }
   }
 </script>
 
