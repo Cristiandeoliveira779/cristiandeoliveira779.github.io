@@ -3,426 +3,1026 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
   <title>통합 블로그 허브</title>
-  
-  <!-- 구글 애드센스 태그 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1967645240354790" crossorigin="anonymous"></script>
+
+  <!-- [구글 애드센스 사이트 연동 스크립트] -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1967645240354790"
+     crossorigin="anonymous"></script>
+
+  <!-- [SEO 메타 태그] -->
+  <meta name="title" content="통합 블로그 허브">
+  <meta name="description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
+
+  <!-- Open Graph / 이미지 -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="통합 블로그 허브">
+  <meta property="og:title" content="통합 블로그 허브">
+  <meta property="og:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
+  <meta property="og:image" content="https://random-og-image.yeonjun050727.workers.dev">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- 트위터 카드 -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="통합 블로그 허브">
+  <meta name="twitter:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
+  <meta name="twitter:image" content="https://random-og-image.yeonjun050727.workers.dev">
+
+  <!-- 프리텐다드 웹폰트 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <style>
     :root {
-      --bg-color: #f4f6f8;
-      --card-bg: #ffffff;
-      --primary-color: #0066ff;
-      --text-main: #212529;
-      --text-sub: #6c757d;
-      --border-color: #e9ecef;
+      --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(255, 255, 255, 0.6);
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --text-muted: #94a3b8;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 10px 20px -5px rgba(37, 99, 235, 0.2);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+    * { box-sizing: border-box; }
 
-    /* 헤더 & 상단 바 */
-    header { background: #ffffff; border-bottom: 1px solid var(--border-color); padding: 25px 0 15px 0; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    header h1 { font-size: 1.9rem; color: #1a1d20; font-weight: 800; letter-spacing: -0.5px; }
-    header p { font-size: 0.95rem; color: var(--text-sub); margin-top: 6px; }
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px 16px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    /* 검색 & 태그 검색 바 */
-    .search-bar-container { max-width: 1200px; margin: 15px auto 0 auto; padding: 0 20px; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-    .search-input-wrapper { display: flex; gap: 8px; flex-grow: 1; max-width: 500px; }
-    .search-input { width: 100%; padding: 10px 16px; border: 1px solid #ced4da; border-radius: 20px; outline: none; font-size: 0.9rem; transition: border-color 0.2s; }
-    .search-input:focus { border-color: var(--primary-color); }
-    
-    .trend-tags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.85rem; }
-    .tag-badge { background: #e7f1ff; color: var(--primary-color); padding: 4px 12px; border-radius: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .tag-badge:hover { background: #d0e2ff; }
+    /* 전체 레이아웃 */
+    .wrapper {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
 
-    /* 레이아웃 구조 */
-    .container { max-width: 1200px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: 280px 1fr; gap: 25px; }
+    /* 메인 콘텐츠 영역 */
+    .container {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
 
-    /* 카드 & 위젯 기본 스타일 */
-    .widget-card { background: var(--card-bg); border-radius: 12px; padding: 18px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
-    .widget-title { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    /* 사이드바 너비 */
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-    /* 실시간 시계 & 날씨 */
-    .clock-display { font-size: 1.4rem; font-weight: 800; color: var(--primary-color); text-align: center; margin: 5px 0; }
-    .weather-info { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color); }
+    /* 위젯 공통 카드 스타일 */
+    .widget-box {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+    }
 
-    /* 미니 달력 */
-    .mini-calendar { width: 100%; text-align: center; font-size: 0.8rem; border-collapse: collapse; }
-    .mini-calendar th, .mini-calendar td { padding: 5px 0; }
-    .mini-calendar th { color: var(--text-sub); font-weight: 600; }
-    .mini-calendar .today { background: var(--primary-color); color: #fff; border-radius: 50%; font-weight: bold; }
+    .widget-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 0;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-    /* 방문자 카운터 */
-    .visitor-stats { display: flex; justify-content: space-around; text-align: center; margin-top: 10px; }
-    .stat-num { font-size: 1.1rem; font-weight: 700; color: #2b8a3e; }
-    .stat-label { font-size: 0.75rem; color: var(--text-sub); }
+    .widget-text {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin: 0;
+    }
 
-    /* 광고 스팟 */
-    .ad-banner-box { background: #fff; border: 1px dashed #ccc; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 25px; color: #888; font-size: 0.85rem; overflow: hidden; }
+    /* 시계 위젯 */
+    .clock-time {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .clock-date {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: 4px;
+      font-weight: 500;
+    }
 
-    /* 포스트 영역 섹션 */
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--text-main); }
-    .section-header h2 { font-size: 1.25rem; font-weight: 700; }
-    .section-header .btn-more { font-size: 0.85rem; color: var(--primary-color); text-decoration: none; font-weight: 600; background: #e7f1ff; padding: 4px 12px; border-radius: 6px; }
+    /* 날씨 위젯 */
+    .weather-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .weather-temp {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .weather-sub {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      text-align: right;
+    }
 
-    /* 포스트 카드 그리드 & 가로 스크롤 지원 */
-    .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; margin-bottom: 30px; }
-    .posts-horizontal { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; }
-    .posts-horizontal::-webkit-scrollbar { height: 6px; }
-    .posts-horizontal::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    /* 미니 달력 위젯 */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+      font-size: 12px;
+    }
+    .calendar-day-header {
+      font-weight: 700;
+      color: var(--text-muted);
+      padding-bottom: 4px;
+    }
+    .calendar-day-header:nth-child(1) { color: #ef4444; }
+    .calendar-day-header:nth-child(7) { color: #3b82f6; }
+    .calendar-cell {
+      padding: 5px 0;
+      border-radius: 6px;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+    .calendar-cell.today {
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+    }
 
-    /* 카드 디자인 */
-    .post-card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.03); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; display: flex; flex-direction: column; min-width: 200px; }
-    .post-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-    .thumb-box { width: 100%; height: 130px; background: #e9ecef; overflow: hidden; }
-    .thumb-img { width: 100%; height: 100%; object-fit: cover; }
-    .card-body { padding: 12px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
-    .card-title { font-size: 0.9rem; font-weight: 700; color: var(--text-main); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6em; line-height: 1.3; }
-    .card-date { font-size: 0.75rem; color: var(--text-sub); margin-top: 8px; }
+    /* 방문자 수 위젯 스타일 */
+    .visitor-stats {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .visitor-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .visitor-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .visitor-num {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .visitor-num.num-up {
+      color: #2563eb;
+      transform: scale(1.2);
+    }
 
-    .loading-text { text-align: center; padding: 30px; color: var(--text-sub); width: 100%; }
+    /* 인기 포스트 위젯 */
+    .top-post-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .top-post-item {
+      font-size: 13px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      transition: color 0.2s;
+    }
+    .top-post-item:hover { color: var(--primary); }
+    .top-post-badge {
+      background: #e2e8f0;
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .top-post-badge.rank-1 { background: #ef4444; color: #fff; }
+    .top-post-badge.rank-2 { background: #f97316; color: #fff; }
+    .top-post-badge.rank-3 { background: #eab308; color: #fff; }
 
-    @media (max-width: 850px) {
-      .container { grid-template-columns: 1fr; }
-      .search-bar-container { flex-direction: column; align-items: stretch; }
+    /* 검색 위젯 */
+    .search-input-box { width: 100%; }
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* 태그 위젯 */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+    .tag-item {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    .tag-item:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* 꿀팁 위젯 */
+    .tip-box {
+      font-size: 13px;
+      color: var(--text-sub);
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+      line-height: 1.5;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease;
+    }
+    .refresh-tip-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 2px 6px;
+      font-weight: 600;
+    }
+
+    /* 대형 스티키 세로 광고 영역 */
+    .adsense-sidebar-tall {
+      min-height: 500px;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.5;
+      position: sticky;
+      top: 20px;
+    }
+
+    /* 메인 광고 영역 */
+    .adsense-box {
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .adsense-banner-main {
+      min-height: 110px;
+      margin-bottom: 20px;
+    }
+
+    /* 블로그 섹션 카드 */
+    .blog-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-md);
+      width: 100%;
+    }
+
+    .blog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .blog-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .visit-btn {
+      background-color: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .visit-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* 가로 스크롤 포스트 리스트 */
+    .post-list-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    .post-list-scroll::-webkit-scrollbar { height: 8px; }
+    .post-list-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+    .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
+    .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+    /* 포스트 미니 카드 */
+    .post-card-mini {
+      flex: 0 0 220px;
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-card-mini:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #cbd5e1;
+    }
+
+    .post-thumb-wrapper-mini {
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+      background-color: #f1f5f9;
+      position: relative;
+    }
+
+    .post-thumb-mini {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .post-card-mini:hover .post-thumb-mini { transform: scale(1.05); }
+
+    .post-content-mini {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
+    .post-title-mini {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 42px;
+    }
+
+    .post-date-mini {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--text-sub);
+      padding: 24px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 1200px) {
+      .sidebar { display: none !important; }
+      .wrapper { display: block; }
+      .container { max-width: 100%; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 12px 8px; }
+      .blog-section { padding: 16px; }
+      .post-card-mini { flex: 0 0 150px; }
+      .post-thumb-wrapper-mini { height: 100px; }
+      .post-title-mini { font-size: 13px; height: 36px; }
+      .adsense-banner-main { 
+        padding: 12px; 
+        font-size: 13px; 
+        min-height: 80px;
+        margin-bottom: 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- 헤더 -->
-  <header>
-    <h1>📢 통합 블로그 허브</h1>
-    <p>실생활 꿀팁, 추천 리뷰, 최신 이슈를 한눈에 모아보는 공간입니다.</p>
-    
-    <!-- 검색 및 트렌드 태그 -->
-    <div class="search-bar-container">
-      <div class="search-input-wrapper">
-        <input type="text" id="searchInput" class="search-input" placeholder="키워드로 포스트 검색..." onkeyup="filterPosts()">
-      </div>
-      <div class="trend-tags">
-        <span class="tag-badge" onclick="searchTag('꿀팁')">#꿀팁</span>
-        <span class="tag-badge" onclick="searchTag('리뷰')">#리뷰</span>
-        <span class="tag-badge" onclick="searchTag('이슈')">#이슈</span>
-        <span class="tag-badge" onclick="searchTag('지원금')">#지원금</span>
+<div class="wrapper">
+
+  <!-- [좌측 사이드바] -->
+  <aside class="sidebar">
+    <div class="widget-box">
+      <h3 class="widget-title">📌 안내</h3>
+      <p class="widget-text">매일 새롭게 업데이트되는 실생활 정보와 리뷰를 한눈에 둘러보세요.</p>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">🕒 실시간 시계</h3>
+      <div id="clock-time" class="clock-time">00:00:00</div>
+      <div id="clock-date" class="clock-date">2026년 0월 0일 (월)</div>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">☀️ 실시간 날씨</h3>
+      <div class="weather-info">
+        <div id="weather-temp" class="weather-temp">--°C</div>
+        <div class="weather-sub">
+          <div id="weather-status">불러오는 중...</div>
+          <div id="weather-dust" style="margin-top: 3px;">미세먼지: --</div>
+        </div>
       </div>
     </div>
-  </header>
 
-  <div class="container">
-    
-    <!-- 좌측 사이드바 (위젯 모음) -->
-    <aside class="sidebar">
-      
-      <!-- 1. 안내 & 실시간 시계 -->
-      <div class="widget-card">
-        <div class="widget-title">📌 실시간 안내</div>
-        <div class="clock-display" id="liveClock">00:00:00</div>
-        <div class="weather-info">
-          <span>🌤️ 현재 날씨</span>
-          <span id="weatherText" style="font-weight: 600;">불러오는 중...</span>
+    <!-- 📅 미니 달력 위젯 -->
+    <div class="widget-box">
+      <h3 class="widget-title">📅 이달의 달력</h3>
+      <div id="mini-calendar" class="calendar-grid"></div>
+    </div>
+
+    <!-- 📊 실시간 자동 카운트 방문자 수 위젯 -->
+    <div class="widget-box">
+      <h3 class="widget-title">📊 방문자 현황</h3>
+      <div class="visitor-stats">
+        <div class="visitor-item">
+          <span class="visitor-label">오늘</span>
+          <span id="visitor-today" class="visitor-num" style="color: var(--primary);">0</span>
+        </div>
+        <div class="visitor-item">
+          <span class="visitor-label">어제</span>
+          <span id="visitor-yesterday" class="visitor-num">0</span>
+        </div>
+        <div class="visitor-item">
+          <span class="visitor-label">누적</span>
+          <span id="visitor-total" class="visitor-num">0</span>
         </div>
       </div>
+    </div>
 
-      <!-- 2. 미니 달력 -->
-      <div class="widget-card">
-        <div class="widget-title">📅 이달의 달력</div>
-        <table class="mini-calendar" id="calendarTable">
-          <thead>
-            <tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr>
-          </thead>
-          <tbody id="calendarBody"></tbody>
-        </table>
+    <!-- 📢 [좌측 스티키 고정 대형 세로 광고] -->
+    <div class="adsense-sidebar-tall">
+      📢 사이드바 대형 광고<br>(디스플레이/고정 배너)
+    </div>
+  </aside>
+
+  <!-- [메인 콘텐츠 영역] -->
+  <main class="container">
+
+    <!-- [상단 메인 배너 광고] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 상단 메인 광고 영역 (구글 애드센스 반응형 배너)
+    </div>
+
+    <!-- 1번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">실생활 유용한 정보</h2>
+        <a class="visit-btn" href="https://blog.naver.com/blogforyou_" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
       </div>
-
-      <!-- 3. 방문자 카운터 -->
-      <div class="widget-card">
-        <div class="widget-title">📊 방문자 현황</div>
-        <div class="visitor-stats">
-          <div>
-            <div class="stat-num" id="todayCount">450</div>
-            <div class="stat-label">오늘</div>
-          </div>
-          <div>
-            <div class="stat-num" id="yesterdayCount">480</div>
-            <div class="stat-label">어제</div>
-          </div>
-          <div>
-            <div class="stat-num" id="totalCount">42,850</div>
-            <div class="stat-label">누적</div>
-          </div>
-        </div>
+      <div id="posts-blog1" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
       </div>
+    </div>
 
-      <!-- 4. 사이드바 구글 애드센스 광고 -->
-      <div class="ad-banner-box">
-        📢 사이드바 광고
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1967645240354790"
-             data-ad-slot="auto"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- 2번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">상품 리뷰 & 추천</h2>
+        <a class="visit-btn" href="https://blog.naver.com/727--" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
       </div>
-
-    </aside>
-
-    <!-- 우측 메인 콘텐츠 영역 -->
-    <main class="main-content">
-
-      <!-- 상단 애드센스 배너 -->
-      <div class="ad-banner-box">
-        📢 상단 메인 광고 영역 (구글 애드센스 반응형 배너)
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1967645240354790"
-             data-ad-slot="auto"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <div id="posts-blog2" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
       </div>
+    </div>
 
-      <!-- 섹션 1: 실생활 유용한 정보 -->
-      <section style="margin-bottom: 35px;">
-        <div class="section-header">
-          <h2>💡 실생활 유용한 정보</h2>
-          <a href="https://blog.naver.com/727--" target="_blank" class="btn-more">블로그 바로가기 ➔</a>
-        </div>
-        <div id="grid-info" class="posts-grid">
-          <div class="loading-text">최신글을 실시간으로 가져오는 중입니다...</div>
-        </div>
-      </section>
+    <!-- 📢 [중간 메인 피드 광고] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 피드 중간 광고 영역 (인피드 / 디스플레이 배너)
+    </div>
 
-      <!-- 중간 애드센스 배너 -->
-      <div class="ad-banner-box">
-        📢 중간 광고 영역 (디스플레이 배너)
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1967645240354790"
-             data-ad-slot="auto"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- 3번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">국내외 이슈 & 트렌드</h2>
+        <a class="visit-btn" href="https://blog.naver.com/tip-foryou" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
       </div>
+      <div id="posts-blog3" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
+      </div>
+    </div>
 
-      <!-- 섹션 2: 상품 리뷰 & 추천 (가로 휠 스크롤 지원) -->
-      <section style="margin-bottom: 35px;">
-        <div class="section-header">
-          <h2>🛒 상품 리뷰 & 추천</h2>
-          <a href="https://blog.naver.com/727--" target="_blank" class="btn-more">블로그 바로가기 ➔</a>
-        </div>
-        <div id="grid-review" class="posts-horizontal">
-          <div class="loading-text">리뷰글을 가져오는 중입니다...</div>
-        </div>
-      </section>
+    <!-- [하단 메인 배너 광고] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 하단 메인 광고 영역 (구글 애드센스 반응형 배너)
+    </div>
 
-      <!-- 섹션 3: 국내외 이슈 & 트렌드 -->
-      <section style="margin-bottom: 35px;">
-        <div class="section-header">
-          <h2>🔥 국내외 이슈 & 트렌드</h2>
-          <a href="https://blog.naver.com/727--" target="_blank" class="btn-more">전체보기 ➔</a>
-        </div>
-        <div id="grid-trend" class="posts-grid">
-          <div class="loading-text">최신 트렌드 글을 가져오는 중입니다...</div>
-        </div>
-      </section>
+  </main>
 
-    </main>
+  <!-- [우측 사이드바] -->
+  <aside class="sidebar">
+    <div class="widget-box">
+      <h3 class="widget-title">🔍 포스트 검색</h3>
+      <div class="search-input-box">
+        <input type="text" id="search-input" class="search-input" placeholder="글 제목 키워드 입력..." onkeyup="filterPosts()">
+      </div>
+    </div>
 
-  </div>
+    <div class="widget-box">
+      <h3 class="widget-title">🔥 실시간 트렌드 태그</h3>
+      <ul id="auto-tag-list" class="tag-list">
+        <li class="tag-item">분석 중...</li>
+      </ul>
+    </div>
 
-  <script>
-    const BLOG_ID = '727--';
-    let allPostsData = [];
+    <!-- 🔥 실시간 인기 포스트 위젯 -->
+    <div class="widget-box">
+      <h3 class="widget-title">🏆 인기 포스트 Top 5</h3>
+      <ul id="top-posts-list" class="top-post-list">
+        <li class="top-post-item"><span class="top-post-badge rank-1">1</span> <span class="loading" style="padding:0; text-align:left;">불러오는 중...</span></li>
+      </ul>
+    </div>
 
-    // 1. 실시간 시계
-    function updateClock() {
+    <div class="widget-box">
+      <h3 class="widget-title">
+        💡 오늘의 꿀팁
+        <button class="refresh-tip-btn" onclick="showNextTip()">다음 🔄</button>
+      </h3>
+      <div id="random-tip" class="tip-box">
+        유용한 팁을 불러오는 중...
+      </div>
+    </div>
+
+    <!-- 📢 [우측 스티키 고정 대형 세로 광고] -->
+    <div class="adsense-sidebar-tall">
+      📢 사이드바 대형 광고<br>(디스플레이/고정 배너)
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  let loadedBlogCount = 0;
+  const totalBlogs = 3;
+  let allTitles = [];
+  let allPostsRaw = [];
+  let tipTimer = null;
+  let currentTipIndex = 0;
+
+  const tipsList = [
+    "전자레인지 청소 시 물과 귤껍질을 함께 넣고 2분 돌린 뒤 닦아내면 냄새와 기름때가 싹 사라집니다.",
+    "옷에 묻은 볼펜 자국은 물파스로 문지른 후 세탁하면 깔끔하게 제거됩니다.",
+    "냉장고 탈취에는 쓰고 남은 원두커피 가루나 100원짜리 동전을 넣어두면 효과적입니다.",
+    "스티커나 테이프 자국은 선크림을 발라두었다가 닦아내면 손쉽게 지워집니다.",
+    "수건 세탁 시 섬유유연제를 쓰지 않아야 물 흡수력이 오랫동안 유지됩니다.",
+    "탄 냄비는 베이킹소다와 식초를 넣고 10분간 끓여주면 쉽게 탄 부위가 떨어집니다.",
+    "창문 틀 때나 먼지는 쌀뜨물이나 과산화수소를 묻힌 휴지로 닦으면 깨끗해집니다.",
+    "딸기는 식초를 1~2방울 떨군 물에 30초만 헹궈내면 무르지 않고 신선도가 오래 갑니다.",
+    "바나나 송이 끝부분을 비닐랩으로 감싸두면 갈변 속도를 훨씬 늦출 수 있습니다.",
+    "청바지는 뒤집어서 차가운 물에 소금을 약간 넣고 세탁하면 변색을 막을 수 있습니다."
+  ];
+
+  window.onload = function() {
+    startClock();
+    fetchWeather();
+    initTips();
+    renderMiniCalendar();
+    initVisitorCounter();
+    initHorizontalScroll();
+
+    loadBlogRSS('blogforyou_', 'posts-blog1');
+    loadBlogRSS('727--', 'posts-blog2');
+    loadBlogRSS('tip-foryou', 'posts-blog3');
+  };
+
+  /* 0. 마우스 휠 세로 -> 가로 스크롤 전환 이벤트 연동 */
+  function initHorizontalScroll() {
+    const scrollContainers = document.querySelectorAll('.post-list-scroll');
+    scrollContainers.forEach(container => {
+      container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          container.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
+    });
+  }
+
+  /* 1. 시계 위젯 */
+  function startClock() {
+    function update() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('liveClock').innerText = `${hours}:${minutes}:${seconds}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // 2. Open-Meteo 날씨 가져오기 (서울 기준)
-    function fetchWeather() {
-      fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true')
-        .then(res => res.json())
-        .then(data => {
-          if (data.current_weather) {
-            const temp = Math.round(data.current_weather.temperature);
-            document.getElementById('weatherText').innerText = `${temp}°C (서울)`;
-          }
-        })
-        .catch(() => {
-          document.getElementById('weatherText').innerText = '맑음 (22°C)';
-        });
-    }
-
-    // 3. 미니 달력 생성
-    function renderCalendar() {
-      const now = new Date();
+      
       const year = now.getFullYear();
-      const month = now.getMonth();
-      const today = now.getDate();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayName = days[now.getDay()];
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
+      document.getElementById('clock-time').innerText = `${hours}:${minutes}:${seconds}`;
+      document.getElementById('clock-date').innerText = `${year}년 ${month}월 ${date}일 (${dayName})`;
+    }
+    update();
+    setInterval(update, 1000);
+  }
 
-      const tbody = document.getElementById('calendarBody');
-      tbody.innerHTML = '';
-      let row = document.createElement('tr');
+  /* 2. 날씨 API */
+  function fetchWeather() {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true';
+    const airUrl = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=37.5665&longitude=126.9780&current=pm10,pm2_5';
 
-      for (let i = 0; i < firstDay; i++) {
-        row.appendChild(document.createElement('td'));
-      }
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          document.getElementById('weather-temp').innerText = `${temp}°C`;
+          
+          let statusText = '맑음 ☀️';
+          if (code >= 1 && code <= 3) statusText = '구름조금 ⛅';
+          else if (code >= 45 && code <= 48) statusText = '안개 🌫️';
+          else if (code >= 51 && code <= 67) statusText = '비 🌧️';
+          else if (code >= 71) statusText = '눈 ❄️';
 
-      for (let date = 1; date <= lastDate; date++) {
-        if (row.children.length === 7) {
-          tbody.appendChild(row);
-          row = document.createElement('tr');
+          document.getElementById('weather-status').innerText = statusText;
         }
-        const cell = document.createElement('td');
-        cell.innerText = date;
-        if (date === today) cell.className = 'today';
-        row.appendChild(cell);
-      }
-      tbody.appendChild(row);
+      }).catch(() => {
+        document.getElementById('weather-status').innerText = '날씨 정보 오류';
+      });
+
+    fetch(airUrl)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.current) {
+          const pm10 = data.current.pm10;
+          let dustGrade = '보통 🟡';
+          if (pm10 <= 30) dustGrade = '좋음 🟢';
+          else if (pm10 > 80) dustGrade = '나쁨 🔴';
+          
+          document.getElementById('weather-dust').innerText = `미세먼지: ${dustGrade}`;
+        }
+      }).catch(() => {});
+  }
+
+  /* 3. 미니 달력 */
+  function renderMiniCalendar() {
+    const calendarEl = document.getElementById('mini-calendar');
+    if (!calendarEl) return;
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const todayDate = now.getDate();
+
+    const daysHeader = ['일', '월', '화', '수', '목', '금', '토'];
+    let html = '';
+
+    daysHeader.forEach(d => {
+      html += `<div class="calendar-day-header">${d}</div>`;
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      html += `<div></div>`;
     }
 
-    // 4. 방문자 수 카운터 (15분 간격 카운팅 로직)
-    function updateVisitorCounter() {
-      let baseTotal = 42850;
-      let lastTime = localStorage.getItem('v_last_time');
-      let extraCount = parseInt(localStorage.getItem('v_extra_count') || '0');
-
-      const now = new Date().getTime();
-      if (!lastTime || now - parseInt(lastTime) > 15 * 60 * 1000) {
-        extraCount += Math.floor(Math.random() * 8) + 10; // 10~17명 랜덤 증가
-        localStorage.setItem('v_last_time', now.toString());
-        localStorage.setItem('v_extra_count', extraCount.toString());
-      }
-
-      document.getElementById('totalCount').innerText = (baseTotal + extraCount).toLocaleString();
+    for (let day = 1; day <= lastDate; day++) {
+      const isToday = day === todayDate ? 'today' : '';
+      html += `<div class="calendar-cell ${isToday}">${day}</div>`;
     }
 
-    // 5. 네이버 블로그 RSS 가져오기 (실시간 캐시 무력화 적용)
-    function fetchBlogData() {
-      const cacheBuster = new Date().getTime();
-      const rssUrl = `https://rss.blog.naver.com/${BLOG_ID}.xml?v=${cacheBuster}`;
-      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
+    calendarEl.innerHTML = html;
+  }
 
-      fetch(apiUrl)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'ok' && data.items && data.items.length > 0) {
-            allPostsData = data.items;
-            displayAllSections(allPostsData);
-          } else {
-            showErrorAll('글을 불러오지 못했습니다.');
+  /* 4. 실시간 방문자 카운터 */
+  function initVisitorCounter() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const savedDate = localStorage.getItem('v_last_date');
+
+    let todayCount = parseInt(localStorage.getItem('v_today') || '450');
+    let yesterdayCount = parseInt(localStorage.getItem('v_yesterday') || '1120');
+    let totalCount = parseInt(localStorage.getItem('v_total') || '42850');
+
+    if (savedDate !== todayStr) {
+      yesterdayCount = todayCount;
+      todayCount = Math.floor(Math.random() * 30) + 20;
+      localStorage.setItem('v_last_date', todayStr);
+      localStorage.setItem('v_yesterday', yesterdayCount);
+    }
+
+    updateVisitorDOM(todayCount, yesterdayCount, totalCount);
+
+    const INTERVAL_MS = 900000; 
+
+    setInterval(() => {
+      const inc = Math.floor(Math.random() * 8) + 10;
+      todayCount += inc;
+      totalCount += inc;
+
+      localStorage.setItem('v_today', todayCount);
+      localStorage.setItem('v_total', totalCount);
+
+      updateVisitorDOM(todayCount, yesterdayCount, totalCount, true);
+    }, INTERVAL_MS);
+  }
+
+  function updateVisitorDOM(today, yesterday, total, animate = false) {
+    const todayEl = document.getElementById('visitor-today');
+    const yesterdayEl = document.getElementById('visitor-yesterday');
+    const totalEl = document.getElementById('visitor-total');
+
+    if (todayEl) todayEl.innerText = today.toLocaleString();
+    if (yesterdayEl) yesterdayEl.innerText = yesterday.toLocaleString();
+    if (totalEl) totalEl.innerText = total.toLocaleString();
+
+    if (animate && todayEl) {
+      todayEl.classList.add('num-up');
+      setTimeout(() => todayEl.classList.remove('num-up'), 500);
+    }
+  }
+
+  /* 5. 꿀팁 로직 */
+  function initTips() {
+    currentTipIndex = Math.floor(Math.random() * tipsList.length);
+    renderTip();
+
+    if (tipTimer) clearInterval(tipTimer);
+    tipTimer = setInterval(showNextTip, 6000);
+  }
+
+  function renderTip() {
+    const tipBox = document.getElementById('random-tip');
+    if (!tipBox) return;
+
+    tipBox.style.opacity = '0';
+    setTimeout(() => {
+      tipBox.innerText = tipsList[currentTipIndex];
+      tipBox.style.opacity = '1';
+    }, 200);
+  }
+
+  function showNextTip() {
+    currentTipIndex = (currentTipIndex + 1) % tipsList.length;
+    renderTip();
+  }
+
+  /* 6. RSS 불러오기 */
+  function loadBlogRSS(blogId, containerId) {
+    const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        if (!data.items || data.items.length === 0) {
+          container.innerHTML = '<div class="loading">최신 글이 없습니다.</div>';
+          onBlogLoaded();
+          return;
+        }
+
+        const posts = data.items.slice(0, 8);
+
+        posts.forEach(post => {
+          allTitles.push(post.title);
+          allPostsRaw.push(post);
+
+          let imageUrl = '';
+          if (post.thumbnail) imageUrl = post.thumbnail;
+          else if (post.enclosure && post.enclosure.link) imageUrl = post.enclosure.link;
+          else {
+            const imgMatch = post.description.match(/<img[^>]+src=["']([^"']+)["']/i);
+            if (imgMatch && imgMatch[1]) imageUrl = imgMatch[1];
           }
-        })
-        .catch(err => {
-          console.error(err);
-          showErrorAll('데이터 로딩 오류 발생');
+
+          if (imageUrl && (imageUrl.includes('postfiles.naver.net') || imageUrl.includes('blogfiles.naver.net'))) {
+            imageUrl = 'https://search.pstatic.net/common/?src=' + encodeURIComponent(imageUrl);
+          }
+
+          const pubDate = new Date(post.pubDate);
+          const formattedDate = `${pubDate.getFullYear()}.${pubDate.getMonth() + 1}.${pubDate.getDate()}`;
+
+          const card = document.createElement('div');
+          card.className = 'post-card-mini';
+          card.setAttribute('data-title', post.title.toLowerCase());
+          card.onclick = () => window.open(post.link, '_blank');
+
+          card.innerHTML = `
+            <div class="post-thumb-wrapper-mini">
+              <img class="post-thumb-mini" src="${imageUrl || 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png'}" referrerpolicy="no-referrer" alt="썸네일" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3959/3959542.png'">
+            </div>
+            <div class="post-content-mini">
+              <div class="post-title-mini" title="${post.title}">${post.title}</div>
+              <div class="post-date-mini">${formattedDate}</div>
+            </div>
+          `;
+          container.appendChild(card);
         });
+
+        onBlogLoaded();
+      })
+      .catch(() => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '<div class="loading">불러오기 실패</div>';
+        onBlogLoaded();
+      });
+  }
+
+  /* 7. 데이터 처리 완료 및 태그 생성 */
+  function onBlogLoaded() {
+    loadedBlogCount++;
+    if (loadedBlogCount >= totalBlogs) {
+      generateAutoTags();
+      renderTopPosts();
     }
+  }
 
-    // 섹션별 카드 분배
-    function displayAllSections(posts) {
-      const gridInfo = document.getElementById('grid-info');
-      const gridReview = document.getElementById('grid-review');
-      const gridTrend = document.getElementById('grid-trend');
+  function renderTopPosts() {
+    const listEl = document.getElementById('top-posts-list');
+    if (!listEl || allPostsRaw.length === 0) return;
 
-      gridInfo.innerHTML = '';
-      gridReview.innerHTML = '';
-      gridTrend.innerHTML = '';
+    const shuffled = [...allPostsRaw].sort(() => 0.5 - Math.random()).slice(0, 5);
+    listEl.innerHTML = '';
 
-      posts.forEach((post, idx) => {
-        const card = createCardElement(post);
-        if (idx < 4) {
-          gridInfo.appendChild(card);
-        } else if (idx < 8) {
-          gridReview.appendChild(card);
-        } else {
-          gridTrend.appendChild(card);
+    shuffled.forEach((post, idx) => {
+      const li = document.createElement('li');
+      li.className = 'top-post-item';
+      li.onclick = () => window.open(post.link, '_blank');
+
+      const rankClass = idx < 3 ? `rank-${idx + 1}` : '';
+      li.innerHTML = `
+        <span class="top-post-badge ${rankClass}">${idx + 1}</span>
+        <span title="${post.title}">${post.title}</span>
+      `;
+      listEl.appendChild(li);
+    });
+  }
+
+  function generateAutoTags() {
+    const wordCounts = {};
+    const ignoreWords = ['추천', '방법', '후기', '리뷰', '정리', '사용', '모음', '위한', '관한', '정보', '꿀팁', '어떻게', '이번'];
+
+    allTitles.forEach(title => {
+      const words = title.replace(/[^\w\s가-힣]/g, '').split(/\s+/);
+      
+      words.forEach(word => {
+        const cleanWord = word.trim();
+        if (cleanWord.length >= 2 && !ignoreWords.includes(cleanWord)) {
+          wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
         }
       });
+    });
 
-      // 만약 글 수가 적을 경우 채워주는 로직
-      if (gridReview.children.length === 0) {
-        posts.slice(0, 4).forEach(p => gridReview.appendChild(createCardElement(p)));
+    const sortedWords = Object.keys(wordCounts).sort((a, b) => wordCounts[b] - wordCounts[a]);
+    const topTags = sortedWords.slice(0, 6);
+
+    const tagListContainer = document.getElementById('auto-tag-list');
+    tagListContainer.innerHTML = '';
+
+    if (topTags.length === 0) {
+      tagListContainer.innerHTML = '<li class="tag-item">태그 없음</li>';
+      return;
+    }
+
+    topTags.forEach(tag => {
+      const li = document.createElement('li');
+      li.className = 'tag-item';
+      li.innerText = `#${tag}`;
+      li.onclick = () => searchTag(tag);
+      tagListContainer.appendChild(li);
+    });
+
+    const resetLi = document.createElement('li');
+    resetLi.className = 'tag-item';
+    resetLi.innerText = '🔄 전체';
+    resetLi.onclick = () => searchTag('');
+    tagListContainer.appendChild(resetLi);
+  }
+
+  /* 8. 검색 필터 */
+  function filterPosts() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.post-card-mini');
+
+    cards.forEach(card => {
+      const title = card.getAttribute('data-title') || '';
+      if (title.includes(query)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
       }
-      if (gridTrend.children.length === 0) {
-        posts.slice(0, 4).forEach(p => gridTrend.appendChild(createCardElement(p)));
-      }
-    }
+    });
+  }
 
-    // 포스트 카드 생성
-    function createCardElement(post) {
-      const card = document.createElement('div');
-      card.className = 'post-card';
-      card.setAttribute('data-title', post.title.toLowerCase());
-      card.onclick = () => window.open(post.link, '_blank');
+  function searchTag(keyword) {
+    const searchInput = document.getElementById('search-input');
+    searchInput.value = keyword;
+    filterPosts();
+  }
+</script>
 
-      let imgUrl = post.thumbnail || '';
-      if (!imgUrl && post.description) {
-        const match = post.description.match(/<img[^>]+src=["']([^"']+)["']/i);
-        if (match && match[1]) imgUrl = match[1];
-      }
-
-      if (imgUrl && (imgUrl.includes('postfiles.naver.net') || imgUrl.includes('blogfiles.naver.net'))) {
-        imgUrl = 'https://search.pstatic.net/common/?src=' + encodeURIComponent(imgUrl);
-      }
-
-      const defaultImg = 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png';
-      const pubDate = new Date(post.pubDate);
-      const dateStr = `${pubDate.getFullYear()}.${pubDate.getMonth() + 1}.${pubDate.getDate()}`;
-
-      card.innerHTML = `
-        <div class="thumb-box">
-          <img class="thumb-img" src="${imgUrl || defaultImg}" referrerpolicy="no-referrer" alt="썸네일" onerror="this.src='${defaultImg}'">
-        </div>
-        <div class="card-body">
-          <div class="card-title" title="${post.title}">${post.title}</div>
-          <div class="card-date">${dateStr}</div>
-        </div>
-      `;
-      return card;
-    }
-
-    // 검색 기능
-    function filterPosts() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.post-card');
-      cards.forEach(card => {
-        const title = card.getAttribute('data-title') || '';
-        card.style.display = title.includes(query) ? 'flex' : 'none';
-      });
-    }
-
-    function searchTag(tag) {
-      document.getElementById('searchInput').value = tag;
-      filterPosts();
-    }
-
-    function showErrorAll(msg) {
-      document.getElementById('grid-info').innerHTML = `<div class="loading-text">${msg}</div>`;
-      document.getElementById('grid-review').innerHTML = `<div class="loading-text">${msg}</div>`;
-      document.getElementById('grid-trend').innerHTML = `<div class="loading-text">${msg}</div>`;
-    }
-
-    // 초기 실행
-    window.onload = function() {
-      fetchWeather();
-      renderCalendar();
-      updateVisitorCounter();
-      fetchBlogData();
-    };
-  </script>
 </body>
 </html>
