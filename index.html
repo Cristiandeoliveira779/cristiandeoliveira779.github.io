@@ -867,57 +867,69 @@
     renderTip();
   }
 
-/* 6. RSS 불러오기 (캐시 방지 적용) */
+/* 6. RSS 불러오기 (다중 파서 및 실시간 갱신 적용) */
   function loadBlogRSS(blogId, containerId) {
-    // 💡 URL 뒤에 현재 시간을 붙여서 캐시를 무력화시킵니다.
     const cacheBuster = new Date().getTime();
     const rssUrl = `https://rss.blog.naver.com/${blogId}.xml?v=${cacheBuster}`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
+    
+    // rss2json 대신 corsproxy + XML 직접 파싱으로 네이버 RSS를 실시간으로 읽어옵니다.
+    const primaryApiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
 
-    fetch(apiUrl)
-      .then(res => res.json())
-      .then(data => {
+    fetch(primaryApiUrl)
+      .then(res => {
+        if (!res.ok) throw new Error('네트워크 응답 오류');
+        return res.text();
+      })
+      .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+      .then(xmlData => {
         const container = document.getElementById(containerId);
         container.innerHTML = '';
 
-        if (!data.items || data.items.length === 0) {
+        const items = xmlData.querySelectorAll("item");
+
+        if (!items || items.length === 0) {
           container.innerHTML = '<div class="loading">최신 글이 없습니다.</div>';
           onBlogLoaded();
           return;
         }
 
-        const posts = data.items.slice(0, 8);
+        // 최신글 8개 추출
+        const postsList = Array.from(items).slice(0, 8);
 
-        posts.forEach(post => {
-          allTitles.push(post.title);
-          allPostsRaw.push(post);
+        postsList.forEach(post => {
+          const title = post.querySelector("title") ? post.querySelector("title").textContent : '제목 없음';
+          const link = post.querySelector("link") ? post.querySelector("link").textContent : '#';
+          const pubDateText = post.querySelector("pubDate") ? post.querySelector("pubDate").textContent : '';
+          const description = post.querySelector("description") ? post.querySelector("description").textContent : '';
 
+          allTitles.push(title);
+          allPostsRaw.push({ title, link });
+
+          // 이미지 추출
           let imageUrl = '';
-          if (post.thumbnail) imageUrl = post.thumbnail;
-          else if (post.enclosure && post.enclosure.link) imageUrl = post.enclosure.link;
-          else {
-            const imgMatch = post.description.match(/<img[^>]+src=["']([^"']+)["']/i);
-            if (imgMatch && imgMatch[1]) imageUrl = imgMatch[1];
+          const imgMatch = description.match(/<img[^>]+src=["']([^"']+)["']/i);
+          if (imgMatch && imgMatch[1]) {
+            imageUrl = imgMatch[1];
           }
 
           if (imageUrl && (imageUrl.includes('postfiles.naver.net') || imageUrl.includes('blogfiles.naver.net'))) {
             imageUrl = 'https://search.pstatic.net/common/?src=' + encodeURIComponent(imageUrl);
           }
 
-          const pubDate = new Date(post.pubDate);
+          const pubDate = pubDateText ? new Date(pubDateText) : new Date();
           const formattedDate = `${pubDate.getFullYear()}.${pubDate.getMonth() + 1}.${pubDate.getDate()}`;
 
           const card = document.createElement('div');
           card.className = 'post-card-mini';
-          card.setAttribute('data-title', post.title.toLowerCase());
-          card.onclick = () => window.open(post.link, '_blank');
+          card.setAttribute('data-title', title.toLowerCase());
+          card.onclick = () => window.open(link, '_blank');
 
           card.innerHTML = `
             <div class="post-thumb-wrapper-mini">
               <img class="post-thumb-mini" src="${imageUrl || 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png'}" referrerpolicy="no-referrer" alt="썸네일" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3959/3959542.png'">
             </div>
             <div class="post-content-mini">
-              <div class="post-title-mini" title="${post.title}">${post.title}</div>
+              <div class="post-title-mini" title="${title}">${title}</div>
               <div class="post-date-mini">${formattedDate}</div>
             </div>
           `;
@@ -927,9 +939,36 @@
         onBlogLoaded();
       })
       .catch(() => {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '<div class="loading">불러오기 실패</div>';
-        onBlogLoaded();
+        // 백업 플랜: 기존 rss2json 시도
+        const backupApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
+        fetch(backupApiUrl)
+          .then(res => res.json())
+          .then(data => {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            if (data.items && data.items.length > 0) {
+              data.items.slice(0, 8).forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'post-card-mini';
+                card.onclick = () => window.open(post.link, '_blank');
+                card.innerHTML = `
+                  <div class="post-thumb-wrapper-mini">
+                    <img class="post-thumb-mini" src="${post.thumbnail || 'https://cdn-icons-png.flaticon.com/512/3959/3959542.png'}" referrerpolicy="no-referrer">
+                  </div>
+                  <div class="post-content-mini">
+                    <div class="post-title-mini">${post.title}</div>
+                  </div>
+                `;
+                container.appendChild(card);
+              });
+            }
+            onBlogLoaded();
+          })
+          .catch(() => {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '<div class="loading">불러오기 실패</div>';
+            onBlogLoaded();
+          });
       });
   }
 
