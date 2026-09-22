@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 읽기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">← 목록으로 돌아가기</a>
+    </header>
+
+    <main>
+        <article id="postContent" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+            <!-- 자바스크립트로 본문이 삽입될 영역 -->
+        </article>
+    </main>
+
+    <footer>
+        <a href="privacy.html">개인정보처리방침</a> | 
+        <a href="about.html">소개</a> | 
+        <a href="contact.html">문의하기</a>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        // 1. 현재 주소에서 id 값 추출 (예: article.html?id=3 -> 3 추출)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = parseInt(urlParams.get('id'));
+
+        // 2. data.js 배열에서 해당 id를 가진 글 찾기
+        const post = posts.find(p => p.id === postId);
+
+        // 3. 화면에 렌더링 (글이 없으면 에러 메시지 표시)
+        const contentArea = document.getElementById('postContent');
+        
+        if (post) {
+            // 브라우저 탭 제목도 글 제목으로 동적 변경 (SEO 최적화)
+            document.title = post.title;
+
+            contentArea.innerHTML = `
+                <div class="meta-info" style="margin-bottom: 20px;">
+                    <span class="category-badge">${post.category}</span>
+                    <span class="date">${post.date}</span>
+                </div>
+                <h1 style="font-size: 2rem; margin-bottom: 20px;">${post.title}</h1>
+                <img src="${post.thumb}" alt="${post.title}" style="width: 100%; border-radius: 8px; margin-bottom: 30px;"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80';">
+                <div class="article-body" style="line-height: 1.8; font-size: 1.1rem;">
+                    ${post.content}
+                </div>
+            `;
+        } else {
+            contentArea.innerHTML = "<h1>존재하지 않거나 삭제된 글입니다.</h1>";
+        }
+    </script>
+</body>
+</html>
