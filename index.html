@@ -52,35 +52,34 @@
       min-height: 100vh;
       color: var(--text-main);
       margin: 0;
-      padding: 30px 20px;
+      padding: 30px 24px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 (PC: max-width 1440px) */
+    /* 전체 레이아웃 (PC 너비 확장: max-width 1680px) */
     .wrapper {
-      max-width: 1440px;
+      max-width: 1680px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 24px;
+      gap: 28px;
     }
 
-    /* 메인 콘텐츠 영역 */
+    /* 메인 콘텐츠 영역 확장 */
     .container {
       flex: 1;
-      max-width: 960px;
       min-width: 0;
       width: 100%;
     }
 
-    /* 사이드바 스타일 (PC 220px) */
+    /* 사이드바 너비 확장 (PC 260px) */
     .sidebar {
-      width: 220px;
+      width: 260px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       position: sticky;
       top: 30px;
     }
@@ -91,18 +90,18 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 16px;
-      padding: 16px;
+      padding: 18px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
     }
 
     .widget-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
       margin-top: 0;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
@@ -110,7 +109,7 @@
     }
 
     .widget-text {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-sub);
       line-height: 1.5;
       margin: 0;
@@ -118,7 +117,7 @@
 
     /* 1. 시계 위젯 */
     .clock-time {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--primary);
       text-align: center;
@@ -140,12 +139,12 @@
       margin-top: 5px;
     }
     .weather-temp {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--text-main);
     }
     .weather-sub {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-sub);
       text-align: right;
     }
@@ -157,10 +156,10 @@
     }
     .search-input {
       width: 100%;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       outline: none;
       transition: all 0.2s;
     }
@@ -181,9 +180,9 @@
     .tag-item {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      padding: 5px 9px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-sub);
       cursor: pointer;
       transition: all 0.2s ease;
@@ -195,7 +194,7 @@
       transform: translateY(-1px);
     }
 
-    /* 5. 꿀팁 위젯 개선 */
+    /* 5. 꿀팁 위젯 */
     .tip-box {
       font-size: 12px;
       color: var(--text-sub);
@@ -248,7 +247,7 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 20px;
-      padding: 20px;
+      padding: 24px;
       margin-bottom: 25px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-md);
@@ -258,13 +257,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 12px;
-      margin-bottom: 15px;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
       border-bottom: 1px solid #e2e8f0;
     }
 
     .blog-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: #0f172a;
       margin: 0;
@@ -275,9 +274,9 @@
       background-color: var(--primary);
       color: #ffffff;
       text-decoration: none;
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       transition: all 0.2s ease;
       box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
@@ -291,7 +290,7 @@
     /* 가로 스크롤 포스트 리스트 */
     .post-list-scroll {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       overflow-x: auto;
       padding-bottom: 12px;
       scroll-behavior: smooth;
@@ -303,9 +302,9 @@
     .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
     .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-    /* 미니 카드 (170px) */
+    /* 미니 카드 너비 보정 (180px) */
     .post-card-mini {
-      flex: 0 0 170px;
+      flex: 0 0 180px;
       background: #ffffff;
       border: 1px solid #f1f5f9;
       border-radius: 12px;
@@ -325,7 +324,7 @@
 
     .post-thumb-wrapper-mini {
       width: 100%;
-      height: 115px;
+      height: 120px;
       overflow: hidden;
       background-color: #f1f5f9;
       position: relative;
@@ -341,7 +340,7 @@
     .post-card-mini:hover .post-thumb-mini { transform: scale(1.05); }
 
     .post-content-mini {
-      padding: 10px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -377,7 +376,7 @@
     }
 
     /* 모바일/태블릿 반응형 */
-    @media (max-width: 1200px) {
+    @media (max-width: 1280px) {
       .sidebar { display: none !important; }
       .wrapper { display: block; }
       .container { max-width: 100%; }
@@ -490,7 +489,6 @@
       </ul>
     </div>
 
-    <!-- [개선된 오늘의 꿀팁 위젯] -->
     <div class="widget-box">
       <h3 class="widget-title">
         💡 오늘의 꿀팁
@@ -511,7 +509,6 @@
   let tipTimer = null;
   let currentTipIndex = 0;
 
-  // 40여 가지 풍부한 꿀팁 모음
   const tipsList = [
     "전자레인지 청소 시 물과 귤껍질을 함께 넣고 2분 돌린 뒤 닦아내면 냄새와 기름때가 싹 사라집니다.",
     "옷에 묻은 볼펜 자국은 물파스로 문지른 후 세탁하면 깔끔하게 제거됩니다.",
@@ -520,7 +517,7 @@
     "수건 세탁 시 섬유유연제를 쓰지 않아야 물 흡수력이 오랫동안 유지됩니다.",
     "탄 냄비는 베이킹소다와 식초를 넣고 10분간 끓여주면 쉽게 탄 부위가 떨어집니다.",
     "창문 틀 때나 먼지는 쌀뜨물이나 과산화수소를 묻힌 휴지로 닦으면 깨끗해집니다.",
-    "딸기는 식초를 1~2방울 똔 물에 30초만 헹궈내면 무르지 않고 신선도가 오래 갑니다.",
+    "딸기는 식초를 1~2방울 떨군 물에 30초만 헹궈내면 무르지 않고 신선도가 오래 갑니다.",
     "바나나 송이 끝부분을 비닐랩으로 감싸두면 갈변 속도를 훨씬 늦출 수 있습니다.",
     "청바지는 뒤집어서 차가운 물에 소금을 약간 넣고 세탁하면 변색을 막을 수 있습니다.",
     "스마트폰 충전 시 '비행기 모드'를 켜두면 충전 속도가 훨씬 빨라집니다.",
@@ -616,13 +613,11 @@
       }).catch(() => {});
   }
 
-  /* 3. 꿀팁 로직 (자동 전환 + 수동 버튼) */
+  /* 3. 꿀팁 로직 */
   function initTips() {
-    // 무작위 첫 꿀팁
     currentTipIndex = Math.floor(Math.random() * tipsList.length);
     renderTip();
 
-    // 6초마다 자동 전환
     if (tipTimer) clearInterval(tipTimer);
     tipTimer = setInterval(showNextTip, 6000);
   }
