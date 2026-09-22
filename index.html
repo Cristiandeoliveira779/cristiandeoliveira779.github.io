@@ -25,9 +25,6 @@
   <meta name="twitter:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
   <meta name="twitter:image" content="https://random-og-image.yeonjun050727.workers.dev">
 
-  <!-- [구글 애드센스 승인/연동 코드 위치] -->
-  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-
   <!-- 프리텐다드 웹폰트 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
@@ -127,14 +124,27 @@
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      padding-bottom: 12px;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
 
-    .post-list-scroll::-webkit-scrollbar { height: 6px; }
-    .post-list-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
-    .post-list-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    /* ★ [수정] 드래그바(스크롤바) 크기 확대 및 스타일 개선 ★ */
+    .post-list-scroll::-webkit-scrollbar { 
+      height: 10px; /* 두께 확대 (기존 6px -> 10px) */
+    }
+    .post-list-scroll::-webkit-scrollbar-track { 
+      background: #e2e8f0; 
+      border-radius: 10px; 
+    }
+    .post-list-scroll::-webkit-scrollbar-thumb { 
+      background: #94a3b8; 
+      border-radius: 10px; 
+      border: 2px solid #e2e8f0; /* 내부 여백 효과 */
+    }
+    .post-list-scroll::-webkit-scrollbar-thumb:hover {
+      background: #64748b; /* 마우스 올렸을 때 더 진하게 */
+    }
 
     /* 컴팩트 미니 카드 */
     .post-card-mini {
@@ -229,7 +239,8 @@
   <!-- 1번 블로그 -->
   <div class="blog-section">
     <div class="blog-header">
-      <h2 class="blog-title">💡 실생활 유용한 정보</h2>
+      <!-- ★ [수정] 이모지 제거 ★ -->
+      <h2 class="blog-title">실생활 유용한 정보</h2>
       <a class="visit-btn" href="https://blog.naver.com/blogforyou_" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
     </div>
     <div id="posts-blog1" class="post-list-scroll">
@@ -240,7 +251,8 @@
   <!-- 2번 블로그 -->
   <div class="blog-section">
     <div class="blog-header">
-      <h2 class="blog-title">🛍️ 상품 리뷰 & 추천</h2>
+      <!-- ★ [수정] 이모지 제거 ★ -->
+      <h2 class="blog-title">상품 리뷰 & 추천</h2>
       <a class="visit-btn" href="https://blog.naver.com/727--" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
     </div>
     <div id="posts-blog2" class="post-list-scroll">
@@ -251,7 +263,8 @@
   <!-- 3번 블로그 -->
   <div class="blog-section">
     <div class="blog-header">
-      <h2 class="blog-title">📰 국내외 이슈 & 트렌드</h2>
+      <!-- ★ [수정] 이모지 제거 ★ -->
+      <h2 class="blog-title">국내외 이슈 & 트렌드</h2>
       <a class="visit-btn" href="https://blog.naver.com/tip-foryou" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
     </div>
     <div id="posts-blog3" class="post-list-scroll">
