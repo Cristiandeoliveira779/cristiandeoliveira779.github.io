@@ -311,7 +311,7 @@
       background: #ffffff;
       border: 1px dashed #cbd5e1;
       border-radius: 18px;
-      padding: 20px;
+      padding: 10px;
       text-align: center;
       color: #94a3b8;
       font-size: 13px;
@@ -321,6 +321,7 @@
       line-height: 1.5;
       position: sticky;
       top: 20px;
+      overflow: hidden;
     }
 
     /* 메인 광고 영역 */
@@ -328,7 +329,7 @@
       background: #ffffff;
       border: 1px dashed #cbd5e1;
       border-radius: 14px;
-      padding: 18px;
+      padding: 10px;
       text-align: center;
       color: #94a3b8;
       font-size: 14px;
@@ -336,6 +337,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .adsense-banner-main {
@@ -556,7 +558,13 @@
 
     <!-- 📢 [좌측 스티키 고정 대형 세로 광고] -->
     <div class="adsense-sidebar-tall">
-      📢 사이드바 대형 광고<br>(디스플레이/고정 배너)
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; height:100%;"
+           data-ad-client="ca-pub-1967645240354790"
+           data-ad-slot="auto"
+           data-ad-format="vertical"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </aside>
 
@@ -565,7 +573,13 @@
 
     <!-- [상단 메인 배너 광고] -->
     <div class="adsense-box adsense-banner-main">
-      📢 상단 메인 광고 영역 (구글 애드센스 반응형 배너)
+      <ins class="adsbygoogle"
+           style="display:block; width:100%;"
+           data-ad-client="ca-pub-1967645240354790"
+           data-ad-slot="auto"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- 1번 블로그 -->
@@ -592,7 +606,13 @@
 
     <!-- 📢 [중간 메인 피드 광고] -->
     <div class="adsense-box adsense-banner-main">
-      📢 피드 중간 광고 영역 (인피드 / 디스플레이 배너)
+      <ins class="adsbygoogle"
+           style="display:block; width:100%;"
+           data-ad-client="ca-pub-1967645240354790"
+           data-ad-slot="auto"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- 3번 블로그 -->
@@ -608,7 +628,13 @@
 
     <!-- [하단 메인 배너 광고] -->
     <div class="adsense-box adsense-banner-main">
-      📢 하단 메인 광고 영역 (구글 애드센스 반응형 배너)
+      <ins class="adsbygoogle"
+           style="display:block; width:100%;"
+           data-ad-client="ca-pub-1967645240354790"
+           data-ad-slot="auto"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
   </main>
@@ -649,7 +675,13 @@
 
     <!-- 📢 [우측 스티키 고정 대형 세로 광고] -->
     <div class="adsense-sidebar-tall">
-      📢 사이드바 대형 광고<br>(디스플레이/고정 배너)
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; height:100%;"
+           data-ad-client="ca-pub-1967645240354790"
+           data-ad-slot="auto"
+           data-ad-format="vertical"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </aside>
 
@@ -867,10 +899,11 @@
     renderTip();
   }
 
-  /* 6. RSS 불러오기 */
+  /* 6. RSS 불러오기 (실시간 캐시 무력화 파라미터 적용) */
   function loadBlogRSS(blogId, containerId) {
-    const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    const cacheBuster = new Date().getTime();
+    const rssUrl = `https://rss.blog.naver.com/${blogId}.xml?v=${cacheBuster}`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
 
     fetch(apiUrl)
       .then(res => res.json())
