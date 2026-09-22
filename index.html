@@ -52,21 +52,22 @@
       min-height: 100vh;
       color: var(--text-main);
       margin: 0;
-      padding: 35px 28px;
+      padding: 20px 16px; /* 양옆 여백 최소화 */
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 */
+    /* 전체 레이아웃 (화면 가득 채움) */
     .wrapper {
-      max-width: 1800px;
+      width: 100%;
+      max-width: 100%; /* 너비 제한 해제 */
       margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: flex-start;
-      gap: 32px;
+      gap: 20px;
     }
 
-    /* 메인 콘텐츠 영역 */
+    /* 메인 콘텐츠 영역 (유연한 넓이 확장) */
     .container {
       flex: 1;
       min-width: 0;
@@ -81,7 +82,7 @@
       flex-direction: column;
       gap: 20px;
       position: sticky;
-      top: 35px;
+      top: 20px;
     }
 
     /* 위젯 공통 카드 스타일 */
@@ -242,7 +243,7 @@
 
     .adsense-banner-main {
       min-height: 110px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .adsense-sidebar-tall {
@@ -266,10 +267,11 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 22px;
-      padding: 28px;
-      margin-bottom: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-md);
+      width: 100%;
     }
 
     .blog-header {
@@ -309,14 +311,15 @@
     /* 가로 스크롤 포스트 리스트 */
     .post-list-scroll {
       display: flex;
-      gap: 20px;
+      gap: 16px;
       overflow-x: auto;
-      padding-bottom: 14px;
+      padding-bottom: 12px;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
+      width: 100%;
     }
 
-    .post-list-scroll::-webkit-scrollbar { height: 10px; }
+    .post-list-scroll::-webkit-scrollbar { height: 8px; }
     .post-list-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
     .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
     .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
@@ -395,14 +398,14 @@
     }
 
     /* 반응형 스타일 */
-    @media (max-width: 1380px) {
+    @media (max-width: 1200px) {
       .sidebar { display: none !important; }
       .wrapper { display: block; }
       .container { max-width: 100%; }
     }
 
     @media (max-width: 640px) {
-      body { padding: 15px 10px; }
+      body { padding: 12px 8px; }
       .blog-section { padding: 16px; }
       .post-card-mini { flex: 0 0 150px; }
       .post-thumb-wrapper-mini { height: 100px; }
@@ -411,7 +414,7 @@
         padding: 12px; 
         font-size: 13px; 
         min-height: 80px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
     }
   </style>
@@ -480,7 +483,7 @@
       </div>
     </div>
 
-    <!-- 📢 [중간 메인 피드 광고 추가] -->
+    <!-- 📢 [중간 메인 피드 광고] -->
     <div class="adsense-box adsense-banner-main">
       📢 피드 중간 광고 영역 (인피드 / 디스플레이 배너)
     </div>
