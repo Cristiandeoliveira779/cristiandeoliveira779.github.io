@@ -56,9 +56,66 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 820px;
+    /* 전체 그리드 레이아웃 (좌-중앙-우) */
+    .wrapper {
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 200px 1fr 200px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* 메인 콘텐츠 영역 */
+    .container {
+      width: 100%;
+    }
+
+    /* 좌/우 사이드바 공통 스타일 */
+    .sidebar {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 30px;
+    }
+
+    .sidebar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 0;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .sidebar-text {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .tag-item {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
     }
 
     /* 애드센스 광고 영역 */
@@ -129,9 +186,8 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* ★ [수정] 드래그바(스크롤바) 크기 확대 및 스타일 개선 ★ */
     .post-list-scroll::-webkit-scrollbar { 
-      height: 10px; /* 두께 확대 (기존 6px -> 10px) */
+      height: 10px;
     }
     .post-list-scroll::-webkit-scrollbar-track { 
       background: #e2e8f0; 
@@ -140,10 +196,10 @@
     .post-list-scroll::-webkit-scrollbar-thumb { 
       background: #94a3b8; 
       border-radius: 10px; 
-      border: 2px solid #e2e8f0; /* 내부 여백 효과 */
+      border: 2px solid #e2e8f0;
     }
     .post-list-scroll::-webkit-scrollbar-thumb:hover {
-      background: #64748b; /* 마우스 올렸을 때 더 진하게 */
+      background: #64748b;
     }
 
     /* 컴팩트 미니 카드 */
@@ -219,6 +275,16 @@
       width: 100%;
     }
 
+    /* 화면 폭이 좁을 때 (태블릿/모바일) 사이드바 숨김 */
+    @media (max-width: 1024px) {
+      .wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
     @media (max-width: 640px) {
       body { padding: 15px 10px; }
       .blog-section { padding: 15px; }
@@ -229,53 +295,73 @@
 </head>
 <body>
 
-<div class="container">
+<div class="wrapper">
 
-  <!-- [상단 애드센스 영역] -->
-  <div class="adsense-box">
-    📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
-  </div>
+  <!-- [좌측 사이드바] -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">📌 안내</h3>
+    <p class="sidebar-text">매일 업데이트되는 실생활 꿀팁과 정보, 상품 리뷰를 한눈에 확인해보세요.</p>
+  </aside>
 
-  <!-- 1번 블로그 -->
-  <div class="blog-section">
-    <div class="blog-header">
-      <!-- ★ [수정] 이모지 제거 ★ -->
-      <h2 class="blog-title">실생활 유용한 정보</h2>
-      <a class="visit-btn" href="https://blog.naver.com/blogforyou_" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
-    </div>
-    <div id="posts-blog1" class="post-list-scroll">
-      <div class="loading">최신글을 불러오는 중...</div>
-    </div>
-  </div>
+  <!-- [메인 콘텐츠] -->
+  <main class="container">
 
-  <!-- 2번 블로그 -->
-  <div class="blog-section">
-    <div class="blog-header">
-      <!-- ★ [수정] 이모지 제거 ★ -->
-      <h2 class="blog-title">상품 리뷰 & 추천</h2>
-      <a class="visit-btn" href="https://blog.naver.com/727--" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
+    <!-- [상단 애드센스 영역] -->
+    <div class="adsense-box">
+      📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
     </div>
-    <div id="posts-blog2" class="post-list-scroll">
-      <div class="loading">최신글을 불러오는 중...</div>
-    </div>
-  </div>
 
-  <!-- 3번 블로그 -->
-  <div class="blog-section">
-    <div class="blog-header">
-      <!-- ★ [수정] 이모지 제거 ★ -->
-      <h2 class="blog-title">국내외 이슈 & 트렌드</h2>
-      <a class="visit-btn" href="https://blog.naver.com/tip-foryou" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
+    <!-- 1번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">실생활 유용한 정보</h2>
+        <a class="visit-btn" href="https://blog.naver.com/blogforyou_" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
+      </div>
+      <div id="posts-blog1" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
+      </div>
     </div>
-    <div id="posts-blog3" class="post-list-scroll">
-      <div class="loading">최신글을 불러오는 중...</div>
-    </div>
-  </div>
 
-  <!-- [하단 애드센스 영역] -->
-  <div class="adsense-box">
-    📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
-  </div>
+    <!-- 2번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">상품 리뷰 & 추천</h2>
+        <a class="visit-btn" href="https://blog.naver.com/727--" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
+      </div>
+      <div id="posts-blog2" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
+      </div>
+    </div>
+
+    <!-- 3번 블로그 -->
+    <div class="blog-section">
+      <div class="blog-header">
+        <h2 class="blog-title">국내외 이슈 & 트렌드</h2>
+        <a class="visit-btn" href="https://blog.naver.com/tip-foryou" target="_blank" rel="noopener noreferrer">블로그 바로가기</a>
+      </div>
+      <div id="posts-blog3" class="post-list-scroll">
+        <div class="loading">최신글을 불러오는 중...</div>
+      </div>
+    </div>
+
+    <!-- [하단 애드센스 영역] -->
+    <div class="adsense-box">
+      📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
+    </div>
+
+  </main>
+
+  <!-- [우측 사이드바] -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">🔥 인기 태그</h3>
+    <ul class="tag-list">
+      <li class="tag-item">#생활꿀팁</li>
+      <li class="tag-item">#제품리뷰</li>
+      <li class="tag-item">#최신트렌드</li>
+      <li class="tag-item">#이슈모음</li>
+      <li class="tag-item">#IT정보</li>
+    </ul>
+  </aside>
 
 </div>
 
