@@ -25,7 +25,7 @@
   <meta name="twitter:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
   <meta name="twitter:image" content="https://random-og-image.yeonjun050727.workers.dev">
 
-  <!-- 프리텐다드 웹폰트 및 아이콘 -->
+  <!-- 프리텐다드 웹폰트 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <style>
@@ -56,7 +56,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 (PC 시원하게 확대: max-width 1440px) */
+    /* 전체 레이아웃 (PC: max-width 1440px) */
     .wrapper {
       max-width: 1440px;
       margin: 0 auto;
@@ -66,7 +66,7 @@
       gap: 24px;
     }
 
-    /* 메인 콘텐츠 영역 확대 (960px) */
+    /* 메인 콘텐츠 영역 */
     .container {
       flex: 1;
       max-width: 960px;
@@ -74,7 +74,7 @@
       width: 100%;
     }
 
-    /* 사이드바 스타일 (220px 너비) */
+    /* 사이드바 스타일 (PC 220px) */
     .sidebar {
       width: 220px;
       flex-shrink: 0;
@@ -169,7 +169,7 @@
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
-    /* 4. 태그 위젯 */
+    /* 4. 자동 생성 태그 위젯 */
     .tag-list {
       display: flex;
       flex-wrap: wrap;
@@ -206,7 +206,7 @@
       line-height: 1.4;
     }
 
-    /* ★ 애드센스 광고 영역 (PC/모바일 공통 보출) ★ */
+    /* 애드센스 광고 영역 (PC/모바일 공통 노출) */
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
@@ -285,7 +285,7 @@
     .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
     .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-    /* 컴팩트 미니 카드 (170px) */
+    /* 미니 카드 (170px) */
     .post-card-mini {
       flex: 0 0 170px;
       background: #ffffff;
@@ -358,7 +358,7 @@
       width: 100%;
     }
 
-    /* ★ 모바일/태블릿 반응형 설정 ★ */
+    /* 모바일/태블릿 반응형 */
     @media (max-width: 1200px) {
       .sidebar { display: none !important; }
       .wrapper { display: block; }
@@ -466,14 +466,9 @@
     </div>
 
     <div class="widget-box">
-      <h3 class="widget-title">🔥 빠른 태그 검색</h3>
-      <ul class="tag-list">
-        <li class="tag-item" onclick="searchTag('세차')">#세차</li>
-        <li class="tag-item" onclick="searchTag('우회')">#우회</li>
-        <li class="tag-item" onclick="searchTag('애플')">#애플</li>
-        <li class="tag-item" onclick="searchTag('삼성')">#삼성</li>
-        <li class="tag-item" onclick="searchTag('이슈')">#이슈</li>
-        <li class="tag-item" onclick="searchTag('')">🔄 전체보기</li>
+      <h3 class="widget-title">🔥 실시간 트렌드 태그</h3>
+      <ul id="auto-tag-list" class="tag-list">
+        <li class="tag-item">분석 중...</li>
       </ul>
     </div>
 
@@ -488,7 +483,9 @@
 </div>
 
 <script>
-  let allPostsData = [];
+  let loadedBlogCount = 0;
+  const totalBlogs = 3;
+  let allTitles = [];
 
   window.onload = function() {
     startClock();
@@ -587,12 +584,15 @@
 
         if (!data.items || data.items.length === 0) {
           container.innerHTML = '<div class="loading">최신 글이 없습니다.</div>';
+          onBlogLoaded();
           return;
         }
 
         const posts = data.items.slice(0, 8);
 
         posts.forEach(post => {
+          allTitles.push(post.title);
+
           let imageUrl = '';
           if (post.thumbnail) imageUrl = post.thumbnail;
           else if (post.enclosure && post.enclosure.link) imageUrl = post.enclosure.link;
@@ -607,15 +607,6 @@
 
           const pubDate = new Date(post.pubDate);
           const formattedDate = `${pubDate.getFullYear()}.${pubDate.getMonth() + 1}.${pubDate.getDate()}`;
-
-          allPostsData.push({
-            title: post.title,
-            containerId: containerId,
-            element: null,
-            link: post.link,
-            imageUrl: imageUrl,
-            date: formattedDate
-          });
 
           const card = document.createElement('div');
           card.className = 'post-card-mini';
@@ -633,14 +624,70 @@
           `;
           container.appendChild(card);
         });
+
+        onBlogLoaded();
       })
       .catch(() => {
         const container = document.getElementById(containerId);
         container.innerHTML = '<div class="loading">불러오기 실패</div>';
+        onBlogLoaded();
       });
   }
 
-  /* 5. 검색 및 태그 필터 */
+  /* 5. 로딩 완료 카운트 및 자동 태그 생성 */
+  function onBlogLoaded() {
+    loadedBlogCount++;
+    if (loadedBlogCount >= totalBlogs) {
+      generateAutoTags();
+    }
+  }
+
+  function generateAutoTags() {
+    const wordCounts = {};
+    const ignoreWords = ['추천', '방법', ' 후기', '리뷰', '정리', '사용', '모음', '위한', '관한', '정보', '꿀팁', '어떻게', '이번'];
+
+    allTitles.forEach(title => {
+      // 특수문자 제거 후 공백 단위 분할
+      const words = title.replace(/[^\w\s가-힣]/g, '').split(/\s+/);
+      
+      words.forEach(word => {
+        const cleanWord = word.trim();
+        // 2글자 이상이며 불용어가 아닌 단어 카운트
+        if (cleanWord.length >= 2 && !ignoreWords.includes(cleanWord)) {
+          wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
+        }
+      });
+    });
+
+    // 출현 빈도순으로 정렬
+    const sortedWords = Object.keys(wordCounts).sort((a, b) => wordCounts[b] - wordCounts[a]);
+    const topTags = sortedWords.slice(0, 6);
+
+    const tagListContainer = document.getElementById('auto-tag-list');
+    tagListContainer.innerHTML = '';
+
+    if (topTags.length === 0) {
+      tagListContainer.innerHTML = '<li class="tag-item">태그 없음</li>';
+      return;
+    }
+
+    topTags.forEach(tag => {
+      const li = document.createElement('li');
+      li.className = 'tag-item';
+      li.innerText = `#${tag}`;
+      li.onclick = () => searchTag(tag);
+      tagListContainer.appendChild(li);
+    });
+
+    // 전체보기 버튼 추가
+    const resetLi = document.createElement('li');
+    resetLi.className = 'tag-item';
+    resetLi.innerText = '🔄 전체보기';
+    resetLi.onclick = () => searchTag('');
+    tagListContainer.appendChild(resetLi);
+  }
+
+  /* 6. 검색 및 태그 필터 */
   function filterPosts() {
     const query = document.getElementById('search-input').value.toLowerCase().trim();
     const cards = document.querySelectorAll('.post-card-mini');
