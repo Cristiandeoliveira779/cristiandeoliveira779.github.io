@@ -40,8 +40,8 @@
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --text-main: #0f172a;
-      --text-sub: #475569;
-      --text-muted: #94a3b8;
+      --text-sub: #334155;
+      --text-muted: #64748b;
       --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 20px -5px rgba(37, 99, 235, 0.2);
@@ -68,7 +68,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 20px;
+      gap: 24px;
     }
 
     /* 메인 콘텐츠 영역 */
@@ -78,9 +78,9 @@
       width: 100%;
     }
 
-    /* 사이드바 너비 */
+    /* 사이드바 너비 (확대된 텍스트 수용을 위해 320px로 확장) */
     .sidebar {
-      width: 300px;
+      width: 320px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -93,84 +93,87 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 18px;
-      padding: 20px;
+      padding: 22px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
     }
 
+    /* 위젯 제목 글씨 크기 확대 (16px -> 18px) */
     .widget-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text-main);
       margin-top: 0;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #cbd5e1;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
+    /* 위젯 일반 본문 글씨 크기 확대 (13.5px -> 15px) */
     .widget-text {
-      font-size: 13.5px;
+      font-size: 15px;
       color: var(--text-sub);
       line-height: 1.6;
       margin: 0;
     }
 
-    /* 시계 위젯 */
+    /* 시계 위젯 글씨 크기 확대 (26px -> 32px) */
     .clock-time {
-      font-size: 26px;
+      font-size: 32px;
       font-weight: 800;
       color: var(--primary);
       text-align: center;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
     .clock-date {
-      font-size: 13.5px;
+      font-size: 15px;
       color: var(--text-sub);
       text-align: center;
-      margin-top: 4px;
-      font-weight: 500;
+      margin-top: 6px;
+      font-weight: 600;
     }
 
-    /* 날씨 위젯 */
+    /* 날씨 위젯 글씨 크기 확대 (24px -> 28px / 13.5px -> 15px) */
     .weather-info {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .weather-temp {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 800;
       color: var(--text-main);
     }
     .weather-sub {
-      font-size: 13.5px;
+      font-size: 15px;
       color: var(--text-sub);
       text-align: right;
+      font-weight: 500;
     }
 
-    /* 미니 달력 위젯 */
+    /* 미니 달력 위젯 글씨 크기 확대 (12px -> 14px) */
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px;
       text-align: center;
-      font-size: 12px;
+      font-size: 14px;
     }
     .calendar-day-header {
       font-weight: 700;
       color: var(--text-muted);
-      padding-bottom: 4px;
+      padding-bottom: 6px;
     }
     .calendar-day-header:nth-child(1) { color: #ef4444; }
     .calendar-day-header:nth-child(7) { color: #3b82f6; }
     .calendar-cell {
-      padding: 5px 0;
-      border-radius: 6px;
+      padding: 6px 0;
+      border-radius: 8px;
       color: var(--text-sub);
-      font-weight: 500;
+      font-weight: 600;
     }
     .calendar-cell.today {
       background: var(--primary);
@@ -178,7 +181,7 @@
       font-weight: 700;
     }
 
-    /* 방문자 수 위젯 스타일 */
+    /* 방문자 수 위젯 글씨 크기 확대 (12px -> 13.5px / 15px -> 18px) */
     .visitor-stats {
       display: flex;
       justify-content: space-around;
@@ -189,13 +192,14 @@
       flex-direction: column;
     }
     .visitor-label {
-      font-size: 12px;
+      font-size: 13.5px;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 4px;
+      font-weight: 600;
     }
     .visitor-num {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
       color: var(--text-main);
       transition: color 0.3s ease, transform 0.3s ease;
     }
@@ -204,21 +208,22 @@
       transform: scale(1.2);
     }
 
-    /* 인기 포스트 위젯 */
+    /* 인기 포스트 위젯 글씨 크기 확대 (13px -> 15px) */
     .top-post-list {
       list-style: none;
       padding: 0;
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
     .top-post-item {
-      font-size: 13px;
+      font-size: 15px;
+      font-weight: 500;
       color: var(--text-sub);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       overflow: hidden;
       white-space: nowrap;
@@ -229,24 +234,24 @@
     .top-post-badge {
       background: #e2e8f0;
       color: var(--text-main);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
       flex-shrink: 0;
     }
     .top-post-badge.rank-1 { background: #ef4444; color: #fff; }
     .top-post-badge.rank-2 { background: #f97316; color: #fff; }
     .top-post-badge.rank-3 { background: #eab308; color: #fff; }
 
-    /* 검색 위젯 */
+    /* 검색 위젯 크기 확대 (13.5px -> 15px) */
     .search-input-box { width: 100%; }
     .search-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 13.5px;
+      border-radius: 12px;
+      font-size: 15px;
       outline: none;
       transition: all 0.2s;
     }
@@ -255,11 +260,11 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
-    /* 태그 위젯 */
+    /* 태그 위젯 글씨 크기 확대 (12.5px -> 14px) */
     .tag-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       padding: 0;
       margin: 0;
       list-style: none;
@@ -267,13 +272,13 @@
     .tag-item {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 14px;
       color: var(--text-sub);
       cursor: pointer;
       transition: all 0.2s ease;
-      font-weight: 500;
+      font-weight: 600;
     }
     .tag-item:hover {
       background: var(--primary);
@@ -281,28 +286,29 @@
       border-color: var(--primary);
     }
 
-    /* 꿀팁 위젯 */
+    /* 꿀팁 위젯 글씨 크기 확대 (13px -> 15px) */
     .tip-box {
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text-sub);
       background: #f8fafc;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 14px;
+      border-radius: 12px;
       border-left: 4px solid var(--primary);
-      line-height: 1.5;
-      min-height: 70px;
+      line-height: 1.6;
+      min-height: 80px;
       display: flex;
       align-items: center;
       transition: opacity 0.3s ease;
+      font-weight: 500;
     }
     .refresh-tip-btn {
       background: none;
       border: none;
-      font-size: 12px;
+      font-size: 13.5px;
       color: var(--primary);
       cursor: pointer;
       padding: 2px 6px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* 대형 스티키 세로 광고 영역 */
@@ -477,7 +483,7 @@
       text-align: center;
       color: var(--text-sub);
       padding: 24px;
-      font-size: 14px;
+      font-size: 15px;
       width: 100%;
     }
 
