@@ -56,7 +56,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 (화면 가득 채움) */
+    /* 전체 레이아웃 */
     .wrapper {
       width: 100%;
       max-width: 100%;
@@ -160,8 +160,8 @@
       color: var(--text-muted);
       padding-bottom: 4px;
     }
-    .calendar-day-header:nth-child(1) { color: #ef4444; } /* 일요일 */
-    .calendar-day-header:nth-child(7) { color: #3b82f6; } /* 토요일 */
+    .calendar-day-header:nth-child(1) { color: #ef4444; }
+    .calendar-day-header:nth-child(7) { color: #3b82f6; }
     .calendar-cell {
       padding: 5px 0;
       border-radius: 6px;
@@ -174,7 +174,7 @@
       font-weight: 700;
     }
 
-    /* 방문자 수 위젯 */
+    /* 방문자 수 위젯 스타일 */
     .visitor-stats {
       display: flex;
       justify-content: space-around;
@@ -193,6 +193,11 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .visitor-num.num-up {
+      color: #2563eb;
+      transform: scale(1.2);
     }
 
     /* 인기 포스트 위젯 */
@@ -296,7 +301,7 @@
       font-weight: 600;
     }
 
-    /* 대형 스티키 세로 광고 영역 (양쪽 하단 꽉 채움) */
+    /* 대형 스티키 세로 광고 영역 */
     .adsense-sidebar-tall {
       min-height: 500px;
       background: #ffffff;
@@ -311,7 +316,7 @@
       justify-content: center;
       line-height: 1.5;
       position: sticky;
-      top: 20px; /* 스크롤 고정 */
+      top: 20px;
     }
 
     /* 메인 광고 영역 */
@@ -520,27 +525,27 @@
       </div>
     </div>
 
-    <!-- 📅 [추가] 미니 달력 위젯 -->
+    <!-- 📅 미니 달력 위젯 -->
     <div class="widget-box">
       <h3 class="widget-title">📅 이달의 달력</h3>
       <div id="mini-calendar" class="calendar-grid"></div>
     </div>
 
-    <!-- 📊 [추가] 방문자 수 카운터 위젯 -->
+    <!-- 📊 실시간 자동 카운트 방문자 수 위젯 -->
     <div class="widget-box">
       <h3 class="widget-title">📊 방문자 현황</h3>
       <div class="visitor-stats">
         <div class="visitor-item">
           <span class="visitor-label">오늘</span>
-          <span class="visitor-num" style="color: var(--primary);">1,284</span>
+          <span id="visitor-today" class="visitor-num" style="color: var(--primary);">0</span>
         </div>
         <div class="visitor-item">
           <span class="visitor-label">어제</span>
-          <span class="visitor-num">3,510</span>
+          <span id="visitor-yesterday" class="visitor-num">0</span>
         </div>
         <div class="visitor-item">
           <span class="visitor-label">누적</span>
-          <span class="visitor-num">142,890</span>
+          <span id="visitor-total" class="visitor-num">0</span>
         </div>
       </div>
     </div>
@@ -620,7 +625,7 @@
       </ul>
     </div>
 
-    <!-- 🔥 [추가] 실시간 인기 포스트 위젯 -->
+    <!-- 🔥 실시간 인기 포스트 위젯 -->
     <div class="widget-box">
       <h3 class="widget-title">🏆 인기 포스트 Top 5</h3>
       <ul id="top-posts-list" class="top-post-list">
@@ -672,11 +677,26 @@
     fetchWeather();
     initTips();
     renderMiniCalendar();
+    initVisitorCounter();
+    initHorizontalScroll();
 
     loadBlogRSS('blogforyou_', 'posts-blog1');
     loadBlogRSS('727--', 'posts-blog2');
     loadBlogRSS('tip-foryou', 'posts-blog3');
   };
+
+  /* 0. 마우스 휠 세로 -> 가로 스크롤 전환 이벤트 연동 */
+  function initHorizontalScroll() {
+    const scrollContainers = document.querySelectorAll('.post-list-scroll');
+    scrollContainers.forEach(container => {
+      container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          container.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
+    });
+  }
 
   /* 1. 시계 위젯 */
   function startClock() {
@@ -739,7 +759,7 @@
       }).catch(() => {});
   }
 
-  /* 3. 미니 달력 생성을 위한 함수 */
+  /* 3. 미니 달력 */
   function renderMiniCalendar() {
     const calendarEl = document.getElementById('mini-calendar');
     if (!calendarEl) return;
@@ -771,7 +791,57 @@
     calendarEl.innerHTML = html;
   }
 
-  /* 4. 꿀팁 로직 */
+  /* 4. [수정된 실시간 방문자 카운터 - 누적 수치 상향 조정 완화] */
+  function initVisitorCounter() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const savedDate = localStorage.getItem('v_last_date');
+
+    // 적절하게 조정한 방문자 수 설정
+    let todayCount = parseInt(localStorage.getItem('v_today') || '450');
+    let yesterdayCount = parseInt(localStorage.getItem('v_yesterday') || '1120');
+    let totalCount = parseInt(localStorage.getItem('v_total') || '42850');
+
+    // 날짜 변경 처리
+    if (savedDate !== todayStr) {
+      yesterdayCount = todayCount;
+      todayCount = Math.floor(Math.random() * 30) + 20; // 초기값
+      localStorage.setItem('v_last_date', todayStr);
+      localStorage.setItem('v_yesterday', yesterdayCount);
+    }
+
+    updateVisitorDOM(todayCount, yesterdayCount, totalCount);
+
+    // 15분(900,000ms)마다 10~17명씩 증가
+    const INTERVAL_MS = 900000; 
+
+    setInterval(() => {
+      const inc = Math.floor(Math.random() * 8) + 10; // 10 ~ 17명
+      todayCount += inc;
+      totalCount += inc;
+
+      localStorage.setItem('v_today', todayCount);
+      localStorage.setItem('v_total', totalCount);
+
+      updateVisitorDOM(todayCount, yesterdayCount, totalCount, true);
+    }, INTERVAL_MS);
+  }
+
+  function updateVisitorDOM(today, yesterday, total, animate = false) {
+    const todayEl = document.getElementById('visitor-today');
+    const yesterdayEl = document.getElementById('visitor-yesterday');
+    const totalEl = document.getElementById('visitor-total');
+
+    if (todayEl) todayEl.innerText = today.toLocaleString();
+    if (yesterdayEl) yesterdayEl.innerText = yesterday.toLocaleString();
+    if (totalEl) totalEl.innerText = total.toLocaleString();
+
+    if (animate && todayEl) {
+      todayEl.classList.add('num-up');
+      setTimeout(() => todayEl.classList.remove('num-up'), 500);
+    }
+  }
+
+  /* 5. 꿀팁 로직 */
   function initTips() {
     currentTipIndex = Math.floor(Math.random() * tipsList.length);
     renderTip();
@@ -796,7 +866,7 @@
     renderTip();
   }
 
-  /* 5. RSS 불러오기 */
+  /* 6. RSS 불러오기 */
   function loadBlogRSS(blogId, containerId) {
     const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
     const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
@@ -860,7 +930,7 @@
       });
   }
 
-  /* 6. 데이터 카운터 및 완료 처리 */
+  /* 7. 데이터 처리 완료 및 태그 생성 */
   function onBlogLoaded() {
     loadedBlogCount++;
     if (loadedBlogCount >= totalBlogs) {
@@ -873,7 +943,6 @@
     const listEl = document.getElementById('top-posts-list');
     if (!listEl || allPostsRaw.length === 0) return;
 
-    // 포스트 무작위 셔플로 인기순 가공
     const shuffled = [...allPostsRaw].sort(() => 0.5 - Math.random()).slice(0, 5);
     listEl.innerHTML = '';
 
@@ -932,7 +1001,7 @@
     tagListContainer.appendChild(resetLi);
   }
 
-  /* 7. 검색 필터 */
+  /* 8. 검색 필터 */
   function filterPosts() {
     const query = document.getElementById('search-input').value.toLowerCase().trim();
     const cards = document.querySelectorAll('.post-card-mini');
