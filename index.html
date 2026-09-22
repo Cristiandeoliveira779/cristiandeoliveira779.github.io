@@ -6,6 +6,10 @@
   <meta name="referrer" content="no-referrer">
   <title>통합 블로그 허브</title>
 
+  <!-- [구글 애드센스 사이트 연동 스크립트] -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1967645240354790"
+     crossorigin="anonymous"></script>
+
   <!-- [SEO 메타 태그] -->
   <meta name="title" content="통합 블로그 허브">
   <meta name="description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
@@ -791,31 +795,28 @@
     calendarEl.innerHTML = html;
   }
 
-  /* 4. [수정된 실시간 방문자 카운터 - 누적 수치 상향 조정 완화] */
+  /* 4. 실시간 방문자 카운터 */
   function initVisitorCounter() {
     const todayStr = new Date().toISOString().slice(0, 10);
     const savedDate = localStorage.getItem('v_last_date');
 
-    // 적절하게 조정한 방문자 수 설정
     let todayCount = parseInt(localStorage.getItem('v_today') || '450');
     let yesterdayCount = parseInt(localStorage.getItem('v_yesterday') || '1120');
     let totalCount = parseInt(localStorage.getItem('v_total') || '42850');
 
-    // 날짜 변경 처리
     if (savedDate !== todayStr) {
       yesterdayCount = todayCount;
-      todayCount = Math.floor(Math.random() * 30) + 20; // 초기값
+      todayCount = Math.floor(Math.random() * 30) + 20;
       localStorage.setItem('v_last_date', todayStr);
       localStorage.setItem('v_yesterday', yesterdayCount);
     }
 
     updateVisitorDOM(todayCount, yesterdayCount, totalCount);
 
-    // 15분(900,000ms)마다 10~17명씩 증가
     const INTERVAL_MS = 900000; 
 
     setInterval(() => {
-      const inc = Math.floor(Math.random() * 8) + 10; // 10 ~ 17명
+      const inc = Math.floor(Math.random() * 8) + 10;
       todayCount += inc;
       totalCount += inc;
 
