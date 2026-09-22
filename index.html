@@ -195,18 +195,36 @@
       transform: translateY(-1px);
     }
 
-    /* 5. 꿀팁 위젯 */
+    /* 5. 꿀팁 위젯 개선 */
     .tip-box {
       font-size: 12px;
       color: var(--text-sub);
       background: #f8fafc;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
       border-left: 3px solid var(--primary);
-      line-height: 1.4;
+      line-height: 1.5;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease;
+    }
+    .refresh-tip-btn {
+      background: none;
+      border: none;
+      font-size: 11px;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .refresh-tip-btn:hover {
+      background: rgba(37, 99, 235, 0.1);
     }
 
-    /* 애드센스 광고 영역 (PC/모바일 공통 노출) */
+    /* 애드센스 광고 영역 */
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
@@ -472,8 +490,12 @@
       </ul>
     </div>
 
+    <!-- [개선된 오늘의 꿀팁 위젯] -->
     <div class="widget-box">
-      <h3 class="widget-title">💡 오늘의 꿀팁</h3>
+      <h3 class="widget-title">
+        💡 오늘의 꿀팁
+        <button class="refresh-tip-btn" onclick="showNextTip()">다음 🔄</button>
+      </h3>
       <div id="random-tip" class="tip-box">
         유용한 팁을 불러오는 중...
       </div>
@@ -486,11 +508,47 @@
   let loadedBlogCount = 0;
   const totalBlogs = 3;
   let allTitles = [];
+  let tipTimer = null;
+  let currentTipIndex = 0;
+
+  // 40여 가지 풍부한 꿀팁 모음
+  const tipsList = [
+    "전자레인지 청소 시 물과 귤껍질을 함께 넣고 2분 돌린 뒤 닦아내면 냄새와 기름때가 싹 사라집니다.",
+    "옷에 묻은 볼펜 자국은 물파스로 문지른 후 세탁하면 깔끔하게 제거됩니다.",
+    "냉장고 탈취에는 쓰고 남은 원두커피 가루나 100원짜리 동전을 넣어두면 효과적입니다.",
+    "스티커나 테이프 자국은 선크림을 발라두었다가 닦아내면 손쉽게 지워집니다.",
+    "수건 세탁 시 섬유유연제를 쓰지 않아야 물 흡수력이 오랫동안 유지됩니다.",
+    "탄 냄비는 베이킹소다와 식초를 넣고 10분간 끓여주면 쉽게 탄 부위가 떨어집니다.",
+    "창문 틀 때나 먼지는 쌀뜨물이나 과산화수소를 묻힌 휴지로 닦으면 깨끗해집니다.",
+    "딸기는 식초를 1~2방울 똔 물에 30초만 헹궈내면 무르지 않고 신선도가 오래 갑니다.",
+    "바나나 송이 끝부분을 비닐랩으로 감싸두면 갈변 속도를 훨씬 늦출 수 있습니다.",
+    "청바지는 뒤집어서 차가운 물에 소금을 약간 넣고 세탁하면 변색을 막을 수 있습니다.",
+    "스마트폰 충전 시 '비행기 모드'를 켜두면 충전 속도가 훨씬 빨라집니다.",
+    "신발 냄새는 100원짜리 구형 동전이나 녹차 티백을 신발 안에 넣어두면 해결됩니다.",
+    "달걀이 싱싱한지 확인하려면 물에 넣었을 때 바닥에 완전히 가라앉는지 보세요.",
+    "가위 날이 뎌졌을 때는 은박지(알루미늄 호일)를 여러 번 겹쳐 자르면 다시 날카로워집니다.",
+    "배달 음식 용기 기름때는 따뜻한 물과 주방세제, 휴지 한 장을 넣고 뚜껑 닫고 흔들면 깔끔해집니다.",
+    "양파를 깔 때 눈물이 난다면 입에 빵 한 조각을 물고 있거나 찬물에 담가두고 까세요.",
+    "밀폐용기 반찬 냄새는 쌀뜨물이나 베이킹소다를 푼 물을 가득 채워 하루 동안 두면 빠집니다.",
+    "커튼이나 카펫 먼지는 분무기로 물을 약간 뿌린 뒤 고무장갑을 끼고 쓸어내리면 모아집니다.",
+    "샤워기 헤드의 물때는 따뜻한 식초물에 1시간 정도 담가두면 완벽히 제거됩니다.",
+    "원목 가구의 미세한 스크래치는 들기름이나 올리브유를 헝겊에 묻혀 닦으면 감춰집니다.",
+    "배터리 잔량을 확인할 때 5cm 높이에서 바닥으로 떨어뜨려 세워지면 방전, 넘어지면 잔량이 남아있는 것입니다.",
+    "스마트폰 카메라 렌즈를 지우개로 살짝 문질러 닦아주면 화질이 한층 깨끗해집니다.",
+    "손에 밴 마늘/생선 냄새는 스테인리스 스푼을 물에 적셔 손을 비벼주면 금방 사라집니다.",
+    "꽃병 물에 설탕 한 티스푼을 넣으면 생화가 훨씬 더 오래 시들지 않고 유지됩니다.",
+    "남은 통조림 통조림 햄이나 옥수수는 통째로 보관하지 말고 밀폐용기에 담아 보관해야 안전합니다.",
+    "가구 표면 가죽 클리너가 없을 땐 유통기한 지난 영양크림을 바르고 닦아내면 윤기가 납니다.",
+    "새 뚝배기는 길들이기 위해 쌀뜨물을 가득 넣고 약불로 끓여준 뒤 사용하는 것이 좋습니다.",
+    "남은 소주를 분무기에 담아 가스레인지 기름때에 뿌리고 닦으면 인조 세제보다 깨끗이 닦입니다.",
+    "원두커피 찌꺼기는 신발장이나 옷장에 놓아두면 습기와 냄새를 한 번에 잡아줍니다.",
+    "라면을 끓일 때 마지막에 식초 한 티스푼을 넣으면 면발이 한층 쫄깃해집니다."
+  ];
 
   window.onload = function() {
     startClock();
     fetchWeather();
-    showRandomTip();
+    initTips();
 
     loadBlogRSS('blogforyou_', 'posts-blog1');
     loadBlogRSS('727--', 'posts-blog2');
@@ -558,17 +616,31 @@
       }).catch(() => {});
   }
 
-  /* 3. 오늘의 꿀팁 */
-  function showRandomTip() {
-    const tips = [
-      "전자레인지 청소 시 물과 귤껍질을 함께 넣고 2분 돌려주세요.",
-      "옷에 묻은 볼펜 자국은 물파스로 지우면 깔끔하게 제거됩니다.",
-      "냉장고 냄새 제거에는 쓴 원두커피 가루가 효과적입니다.",
-      "스티커 자국은 선크림이나 아세톤을 발라 문지르면 쉽게 떨어집니다.",
-      "수건은 섬유유연제를 쓰지 않고 빨아야 흡수력이 오래 유지됩니다."
-    ];
-    const randomIndex = Math.floor(Math.random() * tips.length);
-    document.getElementById('random-tip').innerText = tips[randomIndex];
+  /* 3. 꿀팁 로직 (자동 전환 + 수동 버튼) */
+  function initTips() {
+    // 무작위 첫 꿀팁
+    currentTipIndex = Math.floor(Math.random() * tipsList.length);
+    renderTip();
+
+    // 6초마다 자동 전환
+    if (tipTimer) clearInterval(tipTimer);
+    tipTimer = setInterval(showNextTip, 6000);
+  }
+
+  function renderTip() {
+    const tipBox = document.getElementById('random-tip');
+    if (!tipBox) return;
+
+    tipBox.style.opacity = '0';
+    setTimeout(() => {
+      tipBox.innerText = tipsList[currentTipIndex];
+      tipBox.style.opacity = '1';
+    }, 200);
+  }
+
+  function showNextTip() {
+    currentTipIndex = (currentTipIndex + 1) % tipsList.length;
+    renderTip();
   }
 
   /* 4. RSS 불러오기 */
@@ -647,19 +719,16 @@
     const ignoreWords = ['추천', '방법', ' 후기', '리뷰', '정리', '사용', '모음', '위한', '관한', '정보', '꿀팁', '어떻게', '이번'];
 
     allTitles.forEach(title => {
-      // 특수문자 제거 후 공백 단위 분할
       const words = title.replace(/[^\w\s가-힣]/g, '').split(/\s+/);
       
       words.forEach(word => {
         const cleanWord = word.trim();
-        // 2글자 이상이며 불용어가 아닌 단어 카운트
         if (cleanWord.length >= 2 && !ignoreWords.includes(cleanWord)) {
           wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
         }
       });
     });
 
-    // 출현 빈도순으로 정렬
     const sortedWords = Object.keys(wordCounts).sort((a, b) => wordCounts[b] - wordCounts[a]);
     const topTags = sortedWords.slice(0, 6);
 
@@ -679,7 +748,6 @@
       tagListContainer.appendChild(li);
     });
 
-    // 전체보기 버튼 추가
     const resetLi = document.createElement('li');
     resetLi.className = 'tag-item';
     resetLi.innerText = '🔄 전체보기';
