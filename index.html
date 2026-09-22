@@ -56,7 +56,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 (PC 너비 1800px 확대) */
+    /* 전체 레이아웃 */
     .wrapper {
       max-width: 1800px;
       margin: 0 auto;
@@ -73,18 +73,18 @@
       width: 100%;
     }
 
-    /* 사이드바 너비 확대 (PC 300px) */
+    /* 사이드바 너비 */
     .sidebar {
       width: 300px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
       position: sticky;
       top: 35px;
     }
 
-    /* 위젯 공통 카드 스타일 (패딩/글꼴 확대) */
+    /* 위젯 공통 카드 스타일 */
     .widget-box {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
@@ -115,7 +115,7 @@
       margin: 0;
     }
 
-    /* 1. 시계 위젯 */
+    /* 시계 위젯 */
     .clock-time {
       font-size: 28px;
       font-weight: 800;
@@ -131,7 +131,7 @@
       font-weight: 500;
     }
 
-    /* 2. 날씨 위젯 */
+    /* 날씨 위젯 */
     .weather-info {
       display: flex;
       align-items: center;
@@ -149,7 +149,7 @@
       text-align: right;
     }
 
-    /* 3. 검색 위젯 */
+    /* 검색 위젯 */
     .search-input-box {
       position: relative;
       width: 100%;
@@ -168,7 +168,7 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
-    /* 4. 자동 생성 태그 위젯 */
+    /* 태그 위젯 */
     .tag-list {
       display: flex;
       flex-wrap: wrap;
@@ -195,7 +195,7 @@
       transform: translateY(-1px);
     }
 
-    /* 5. 꿀팁 위젯 */
+    /* 꿀팁 위젯 */
     .tip-box {
       font-size: 13.5px;
       color: var(--text-sub);
@@ -224,22 +224,40 @@
       background: rgba(37, 99, 235, 0.1);
     }
 
-    /* 애드센스 광고 영역 */
+    /* 애드센스 광고 영역 공통 */
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
       border-radius: 14px;
       padding: 18px;
       text-align: center;
-      margin-bottom: 28px;
       color: #94a3b8;
       font-size: 14px;
       width: 100%;
       box-sizing: border-box;
-      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .adsense-banner-main {
+      min-height: 110px;
+      margin-bottom: 24px;
+    }
+
+    .adsense-sidebar-tall {
+      min-height: 250px;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.5;
     }
 
     /* 블로그 섹션 카드 */
@@ -249,7 +267,7 @@
       -webkit-backdrop-filter: blur(12px);
       border-radius: 22px;
       padding: 28px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-md);
     }
@@ -303,7 +321,7 @@
     .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
     .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-    /* 포스트 카드 크기 확대 (너비 220px) */
+    /* 포스트 미니 카드 */
     .post-card-mini {
       flex: 0 0 220px;
       background: #ffffff;
@@ -376,7 +394,7 @@
       width: 100%;
     }
 
-    /* 모바일/태블릿 반응형 */
+    /* 반응형 스타일 */
     @media (max-width: 1380px) {
       .sidebar { display: none !important; }
       .wrapper { display: block; }
@@ -389,11 +407,11 @@
       .post-card-mini { flex: 0 0 150px; }
       .post-thumb-wrapper-mini { height: 100px; }
       .post-title-mini { font-size: 13px; height: 36px; }
-      .adsense-box { 
+      .adsense-banner-main { 
         padding: 12px; 
         font-size: 13px; 
-        min-height: 75px;
-        margin-bottom: 20px;
+        min-height: 80px;
+        margin-bottom: 18px;
       }
     }
   </style>
@@ -402,7 +420,7 @@
 
 <div class="wrapper">
 
-  <!-- [좌측 사이드바: 기능성 위젯 (PC용)] -->
+  <!-- [좌측 사이드바: 기능성 위젯 + 애드센스 세로 광고] -->
   <aside class="sidebar">
     <div class="widget-box">
       <h3 class="widget-title">📌 안내</h3>
@@ -425,14 +443,19 @@
         </div>
       </div>
     </div>
+
+    <!-- 📢 [좌측 사이드바 하단 광고 영역] -->
+    <div class="adsense-sidebar-tall">
+      📢 사이드바 광고 영역<br>(디스플레이/세로형 배너)
+    </div>
   </aside>
 
   <!-- [메인 콘텐츠 영역 (PC/모바일 공통)] -->
   <main class="container">
 
-    <!-- [상단 애드센스 광고 영역] -->
-    <div class="adsense-box">
-      📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
+    <!-- [상단 메인 배너 광고] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 상단 메인 광고 영역 (구글 애드센스 반응형 배너)
     </div>
 
     <!-- 1번 블로그 -->
@@ -457,6 +480,11 @@
       </div>
     </div>
 
+    <!-- 📢 [중간 메인 피드 광고 추가] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 피드 중간 광고 영역 (인피드 / 디스플레이 배너)
+    </div>
+
     <!-- 3번 블로그 -->
     <div class="blog-section">
       <div class="blog-header">
@@ -468,14 +496,14 @@
       </div>
     </div>
 
-    <!-- [하단 애드센스 광고 영역] -->
-    <div class="adsense-box">
-      📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
+    <!-- [하단 메인 배너 광고] -->
+    <div class="adsense-box adsense-banner-main">
+      📢 하단 메인 광고 영역 (구글 애드센스 반응형 배너)
     </div>
 
   </main>
 
-  <!-- [우측 사이드바: 기능성 위젯 (PC용)] -->
+  <!-- [우측 사이드바: 기능성 위젯 + 애드센스 세로 광고] -->
   <aside class="sidebar">
     <div class="widget-box">
       <h3 class="widget-title">🔍 포스트 검색</h3>
@@ -499,6 +527,11 @@
       <div id="random-tip" class="tip-box">
         유용한 팁을 불러오는 중...
       </div>
+    </div>
+
+    <!-- 📢 [우측 사이드바 하단 광고 영역] -->
+    <div class="adsense-sidebar-tall">
+      📢 사이드바 광고 영역<br>(디스플레이/세로형 배너)
     </div>
   </aside>
 
