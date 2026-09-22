@@ -4,37 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- 페이지 기본 정보 -->
-  <title>통합 블로그 Hub</title>
-  <meta name="description" content="3개 블로그의 최신 포스팅을 한눈에 확인하세요.">
+  <!-- [기본 SEO 메타 태그] -->
+  <title>통합 블로그 Hub | blogforyou_, 727--, tip-foryou</title>
+  <meta name="title" content="통합 블로그 Hub">
+  <meta name="description" content="blogforyou_, 727--, tip-foryou 3개 블로그의 최신 주요 포스팅을 한눈에 확인하세요.">
+  <meta name="keywords" content="블로그, 네이버블로그, blogforyou_, 727--, tip-foryou, 통합블로그">
 
-  <!-- 오픈 그래프 (Open Graph) 메타 태그 -->
+  <!-- [오픈 그래프 (Open Graph - 카카오톡, 네이버, 페이스북 등 링크 공유용)] -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="통합 블로그 Hub">
-  <meta property="og:title" content="나의 통합 블로그 Hub">
+  <meta property="og:title" content="통합 블로그 Hub">
   <meta property="og:description" content="3개 블로그의 최신 포스팅을 한눈에 확인하세요.">
   
-  <!-- ★ Cloudflare Worker 무작위 대표 이미지 주소 ★ -->
+  <!-- ★ Cloudflare Worker 동적 썸네일(5개 중 무작위 렌더링) ★ -->
   <meta property="og:image" content="https://random-og-image.yeonjun050727.workers.dev">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="통합 블로그 Hub 대표 썸네일 이미지">
 
-  <!-- 트위터 카드 (Twitter Card) 메타 태그 -->
+  <!-- [트위터 카드 (Twitter Card)] -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="나의 통합 블로그 Hub">
+  <meta name="twitter:title" content="통합 블로그 Hub">
   <meta name="twitter:description" content="3개 블로그의 최신 포스팅을 한눈에 확인하세요.">
   <meta name="twitter:image" content="https://random-og-image.yeonjun050727.workers.dev">
 
+  <!-- [스마트폰 모바일 웹앱 최적화] -->
+  <meta name="theme-color" content="#03cf5d">
+
   <style>
-    /* 기본 기본 스타일링 */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: #f8f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f6f8;
       color: #333;
       display: flex;
       flex-direction: column;
@@ -44,63 +50,109 @@
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 480px;
       width: 100%;
       background: #ffffff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 40px 28px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
       text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background-color: #e8f9ed;
+      color: #03cf5d;
+      font-size: 0.825rem;
+      font-weight: 700;
+      border-radius: 20px;
+      margin-bottom: 16px;
     }
     h1 {
       font-size: 1.8rem;
       margin-bottom: 10px;
       color: #111;
+      font-weight: 800;
+      letter-spacing: -0.5px;
     }
-    p {
+    p.subtitle {
       color: #666;
-      margin-bottom: 25px;
+      margin-bottom: 32px;
       font-size: 0.95rem;
+      line-height: 1.5;
     }
     .blog-links {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
     .blog-button {
-      display: block;
-      padding: 14px 20px;
-      background-color: #03cf5d; /* 네이버 대표 색상 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      background-color: #03cf5d; /* 네이버 시그니처 그린 */
       color: white;
       text-decoration: none;
-      font-weight: bold;
-      border-radius: 10px;
-      transition: background-color 0.2s, transform 0.1s;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 14px;
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 4px 14px rgba(3, 207, 93, 0.25);
     }
     .blog-button:hover {
       background-color: #02b350;
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(3, 207, 93, 0.35);
     }
     .blog-button.second {
-      background-color: #2db400;
+      background-color: #1ec800;
+      box-shadow: 0 4px 14px rgba(30, 200, 0, 0.25);
+    }
+    .blog-button.second:hover {
+      background-color: #1ab000;
+      box-shadow: 0 6px 20px rgba(30, 200, 0, 0.35);
     }
     .blog-button.third {
-      background-color: #1ec800;
+      background-color: #00b493;
+      box-shadow: 0 4px 14px rgba(0, 180, 147, 0.25);
+    }
+    .blog-button.third:hover {
+      background-color: #009c7f;
+      box-shadow: 0 6px 20px rgba(0, 180, 147, 0.35);
+    }
+    footer {
+      margin-top: 25px;
+      font-size: 0.8rem;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
+    <span class="badge">NAVER BLOG HUB</span>
     <h1>통합 블로그 Hub</h1>
-    <p>아래 링크를 통해 원하는 블로그로 이동하실 수 있습니다.</p>
+    <p class="subtitle">방문하고자 하는 블로그를 선택해 주세요.</p>
 
     <div class="blog-links">
-      <!-- 3개 블로그 실제 주소로 href 링크를 수정해 주세요 -->
-      <a href="https://blog.naver.com/" class="blog-button" target="_blank">첫 번째 블로그 방문하기 (blogforyou_)</a>
-      <a href="https://blog.naver.com/" class="blog-button second" target="_blank">두 번째 블로그 방문하기 (727--)</a>
-      <a href="https://blog.naver.com/" class="blog-button third" target="_blank">세 번째 블로그 방문하기 (tip-foryou)</a>
+      <!-- 1. blogforyou_ 블로그 -->
+      <a href="https://blog.naver.com/blogforyou_" class="blog-button" target="_blank" rel="noopener noreferrer">
+        blogforyou_ 블로그 바로가기
+      </a>
+
+      <!-- 2. 727-- 블로그 -->
+      <a href="https://blog.naver.com/727--" class="blog-button second" target="_blank" rel="noopener noreferrer">
+        727-- 블로그 바로가기
+      </a>
+
+      <!-- 3. tip-foryou 블로그 -->
+      <a href="https://blog.naver.com/tip-foryou" class="blog-button third" target="_blank" rel="noopener noreferrer">
+        tip-foryou 블로그 바로가기
+      </a>
     </div>
+
+    <footer>© 2026 Blog Hub All Rights Reserved.</footer>
   </div>
 
 </body>
