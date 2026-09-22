@@ -52,56 +52,56 @@
       min-height: 100vh;
       color: var(--text-main);
       margin: 0;
-      padding: 30px 24px;
+      padding: 35px 28px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 레이아웃 (PC 너비 확장: max-width 1680px) */
+    /* 전체 레이아웃 (PC 너비 1800px 확대) */
     .wrapper {
-      max-width: 1680px;
+      max-width: 1800px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 28px;
+      gap: 32px;
     }
 
-    /* 메인 콘텐츠 영역 확장 */
+    /* 메인 콘텐츠 영역 */
     .container {
       flex: 1;
       min-width: 0;
       width: 100%;
     }
 
-    /* 사이드바 너비 확장 (PC 260px) */
+    /* 사이드바 너비 확대 (PC 300px) */
     .sidebar {
-      width: 260px;
+      width: 300px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       position: sticky;
-      top: 30px;
+      top: 35px;
     }
 
-    /* 위젯 공통 카드 스타일 */
+    /* 위젯 공통 카드 스타일 (패딩/글꼴 확대) */
     .widget-box {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-radius: 16px;
-      padding: 18px;
+      border-radius: 18px;
+      padding: 22px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
     }
 
     .widget-title {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text-main);
       margin-top: 0;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
       border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
@@ -109,25 +109,25 @@
     }
 
     .widget-text {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-sub);
-      line-height: 1.5;
+      line-height: 1.6;
       margin: 0;
     }
 
     /* 1. 시계 위젯 */
     .clock-time {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 800;
       color: var(--primary);
       text-align: center;
       letter-spacing: 0.5px;
     }
     .clock-date {
-      font-size: 12px;
+      font-size: 14px;
       color: var(--text-sub);
       text-align: center;
-      margin-top: 4px;
+      margin-top: 6px;
       font-weight: 500;
     }
 
@@ -139,12 +139,12 @@
       margin-top: 5px;
     }
     .weather-temp {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--text-main);
     }
     .weather-sub {
-      font-size: 12px;
+      font-size: 14px;
       color: var(--text-sub);
       text-align: right;
     }
@@ -156,23 +156,23 @@
     }
     .search-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 13px;
+      border-radius: 10px;
+      font-size: 14px;
       outline: none;
       transition: all 0.2s;
     }
     .search-input:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
     /* 4. 자동 생성 태그 위젯 */
     .tag-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       padding: 0;
       margin: 0;
       list-style: none;
@@ -180,12 +180,13 @@
     .tag-item {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 13px;
       color: var(--text-sub);
       cursor: pointer;
       transition: all 0.2s ease;
+      font-weight: 500;
     }
     .tag-item:hover {
       background: var(--primary);
@@ -196,14 +197,14 @@
 
     /* 5. 꿀팁 위젯 */
     .tip-box {
-      font-size: 12px;
+      font-size: 13.5px;
       color: var(--text-sub);
       background: #f8fafc;
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 3px solid var(--primary);
-      line-height: 1.5;
-      min-height: 70px;
+      padding: 14px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+      line-height: 1.6;
+      min-height: 80px;
       display: flex;
       align-items: center;
       transition: opacity 0.3s ease;
@@ -211,10 +212,10 @@
     .refresh-tip-btn {
       background: none;
       border: none;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--primary);
       cursor: pointer;
-      padding: 2px 6px;
+      padding: 3px 8px;
       border-radius: 4px;
       font-weight: 600;
       transition: background 0.2s;
@@ -227,15 +228,15 @@
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 15px;
+      border-radius: 14px;
+      padding: 18px;
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
       color: #94a3b8;
-      font-size: 13px;
+      font-size: 14px;
       width: 100%;
       box-sizing: border-box;
-      min-height: 90px;
+      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -246,9 +247,9 @@
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 25px;
+      border-radius: 22px;
+      padding: 28px;
+      margin-bottom: 28px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-md);
     }
@@ -257,13 +258,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 14px;
-      margin-bottom: 18px;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
       border-bottom: 1px solid #e2e8f0;
     }
 
     .blog-title {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
       color: #0f172a;
       margin: 0;
@@ -274,9 +275,9 @@
       background-color: var(--primary);
       color: #ffffff;
       text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 600;
       transition: all 0.2s ease;
       box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
@@ -290,9 +291,9 @@
     /* 가로 스크롤 포스트 리스트 */
     .post-list-scroll {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       overflow-x: auto;
-      padding-bottom: 12px;
+      padding-bottom: 14px;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
@@ -302,12 +303,12 @@
     .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
     .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-    /* 미니 카드 너비 보정 (180px) */
+    /* 포스트 카드 크기 확대 (너비 220px) */
     .post-card-mini {
-      flex: 0 0 180px;
+      flex: 0 0 220px;
       background: #ffffff;
       border: 1px solid #f1f5f9;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -317,14 +318,14 @@
     }
 
     .post-card-mini:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px);
       box-shadow: var(--shadow-lg);
       border-color: #cbd5e1;
     }
 
     .post-thumb-wrapper-mini {
       width: 100%;
-      height: 120px;
+      height: 140px;
       overflow: hidden;
       background-color: #f1f5f9;
       position: relative;
@@ -340,7 +341,7 @@
     .post-card-mini:hover .post-thumb-mini { transform: scale(1.05); }
 
     .post-content-mini {
-      padding: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -348,35 +349,35 @@
     }
 
     .post-title-mini {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
-      margin: 0 0 6px 0;
-      line-height: 1.35;
+      margin: 0 0 8px 0;
+      line-height: 1.4;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      height: 35px;
+      height: 42px;
     }
 
     .post-date-mini {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-muted);
       font-weight: 500;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .loading {
       text-align: center;
       color: var(--text-sub);
-      padding: 20px;
-      font-size: 13px;
+      padding: 24px;
+      font-size: 14px;
       width: 100%;
     }
 
     /* 모바일/태블릿 반응형 */
-    @media (max-width: 1280px) {
+    @media (max-width: 1380px) {
       .sidebar { display: none !important; }
       .wrapper { display: block; }
       .container { max-width: 100%; }
@@ -384,14 +385,15 @@
 
     @media (max-width: 640px) {
       body { padding: 15px 10px; }
-      .blog-section { padding: 15px; }
-      .post-card-mini { flex: 0 0 140px; }
-      .post-thumb-wrapper-mini { height: 95px; }
+      .blog-section { padding: 16px; }
+      .post-card-mini { flex: 0 0 150px; }
+      .post-thumb-wrapper-mini { height: 100px; }
+      .post-title-mini { font-size: 13px; height: 36px; }
       .adsense-box { 
         padding: 12px; 
-        font-size: 12px; 
-        min-height: 70px;
-        margin-bottom: 18px;
+        font-size: 13px; 
+        min-height: 75px;
+        margin-bottom: 20px;
       }
     }
   </style>
@@ -419,7 +421,7 @@
         <div id="weather-temp" class="weather-temp">--°C</div>
         <div class="weather-sub">
           <div id="weather-status">불러오는 중...</div>
-          <div id="weather-dust" style="margin-top: 2px;">미세먼지: --</div>
+          <div id="weather-dust" style="margin-top: 3px;">미세먼지: --</div>
         </div>
       </div>
     </div>
@@ -428,7 +430,7 @@
   <!-- [메인 콘텐츠 영역 (PC/모바일 공통)] -->
   <main class="container">
 
-    <!-- [상단 애드센스 광고 영역 - PC/모바일 모두 노출] -->
+    <!-- [상단 애드센스 광고 영역] -->
     <div class="adsense-box">
       📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
     </div>
@@ -466,7 +468,7 @@
       </div>
     </div>
 
-    <!-- [하단 애드센스 광고 영역 - PC/모바일 모두 노출] -->
+    <!-- [하단 애드센스 광고 영역] -->
     <div class="adsense-box">
       📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
     </div>
