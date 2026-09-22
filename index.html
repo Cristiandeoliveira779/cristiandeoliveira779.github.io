@@ -10,7 +10,7 @@
   <meta name="title" content="통합 블로그 허브">
   <meta name="description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
 
-  <!-- ★ [Cloudflare Worker 무작위 대표 이미지 메타태그] ★ -->
+  <!-- Open Graph / 이미지 -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="통합 블로그 허브">
   <meta property="og:title" content="통합 블로그 허브">
@@ -19,19 +19,19 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
-  <!-- 트위터 카드 메타태그 -->
+  <!-- 트위터 카드 -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="통합 블로그 허브">
   <meta name="twitter:description" content="실생활 꿀팁, 추천 리뷰, 최신 이슈 모음 블로그입니다.">
   <meta name="twitter:image" content="https://random-og-image.yeonjun050727.workers.dev">
 
-  <!-- 프리텐다드 웹폰트 -->
+  <!-- 프리텐다드 웹폰트 및 아이콘 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <style>
     :root {
       --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: rgba(255, 255, 255, 0.88);
       --card-border: rgba(255, 255, 255, 0.6);
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
@@ -52,31 +52,41 @@
       min-height: 100vh;
       color: var(--text-main);
       margin: 0;
-      padding: 30px 15px;
+      padding: 30px 20px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 전체 3열 고정 레이아웃 */
+    /* 전체 레이아웃 (PC 시원하게 확대: max-width 1440px) */
     .wrapper {
-      max-width: 1280px;
+      max-width: 1440px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 20px;
+      gap: 24px;
     }
 
-    /* 메인 콘텐츠 영역 */
+    /* 메인 콘텐츠 영역 확대 (960px) */
     .container {
       flex: 1;
-      max-width: 820px;
+      max-width: 960px;
       min-width: 0;
+      width: 100%;
     }
 
-    /* 좌/우 사이드바 (단 1개씩만 존재하도록 고정) */
+    /* 사이드바 스타일 (220px 너비) */
     .sidebar {
-      width: 200px;
+      width: 220px;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 30px;
+    }
+
+    /* 위젯 공통 카드 스타일 */
+    .widget-box {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -84,27 +94,82 @@
       padding: 16px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
-      position: sticky;
-      top: 30px;
     }
 
-    .sidebar-title {
+    .widget-title {
       font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
       margin-top: 0;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .sidebar-text {
+    .widget-text {
       font-size: 12px;
       color: var(--text-sub);
       line-height: 1.5;
       margin: 0;
     }
 
+    /* 1. 시계 위젯 */
+    .clock-time {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .clock-date {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* 2. 날씨 위젯 */
+    .weather-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+    .weather-temp {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .weather-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: right;
+    }
+
+    /* 3. 검색 위젯 */
+    .search-input-box {
+      position: relative;
+      width: 100%;
+    }
+    .search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    /* 4. 태그 위젯 */
     .tag-list {
       display: flex;
       flex-wrap: wrap;
@@ -113,17 +178,35 @@
       margin: 0;
       list-style: none;
     }
-
     .tag-item {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      padding: 4px 8px;
+      padding: 5px 9px;
       border-radius: 6px;
       font-size: 11px;
       color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tag-item:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
     }
 
-    /* 애드센스 광고 영역 */
+    /* 5. 꿀팁 위젯 */
+    .tip-box {
+      font-size: 12px;
+      color: var(--text-sub);
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary);
+      line-height: 1.4;
+    }
+
+    /* ★ 애드센스 광고 영역 (PC/모바일 공통 보출) ★ */
     .adsense-box {
       background: #ffffff;
       border: 1px dashed #cbd5e1;
@@ -133,6 +216,12 @@
       margin-bottom: 25px;
       color: #94a3b8;
       font-size: 13px;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* 블로그 섹션 카드 */
@@ -184,32 +273,21 @@
     /* 가로 스크롤 포스트 리스트 */
     .post-list-scroll {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       overflow-x: auto;
       padding-bottom: 12px;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
 
-    .post-list-scroll::-webkit-scrollbar { 
-      height: 10px;
-    }
-    .post-list-scroll::-webkit-scrollbar-track { 
-      background: #e2e8f0; 
-      border-radius: 10px; 
-    }
-    .post-list-scroll::-webkit-scrollbar-thumb { 
-      background: #94a3b8; 
-      border-radius: 10px; 
-      border: 2px solid #e2e8f0;
-    }
-    .post-list-scroll::-webkit-scrollbar-thumb:hover {
-      background: #64748b;
-    }
+    .post-list-scroll::-webkit-scrollbar { height: 10px; }
+    .post-list-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+    .post-list-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid #e2e8f0; }
+    .post-list-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-    /* 컴팩트 미니 카드 */
+    /* 컴팩트 미니 카드 (170px) */
     .post-card-mini {
-      flex: 0 0 160px;
+      flex: 0 0 170px;
       background: #ffffff;
       border: 1px solid #f1f5f9;
       border-radius: 12px;
@@ -229,7 +307,7 @@
 
     .post-thumb-wrapper-mini {
       width: 100%;
-      height: 110px;
+      height: 115px;
       overflow: hidden;
       background-color: #f1f5f9;
       position: relative;
@@ -280,17 +358,11 @@
       width: 100%;
     }
 
-    /* 모바일/태블릿(1200px 이하) 반응형 숨김 처리 */
+    /* ★ 모바일/태블릿 반응형 설정 ★ */
     @media (max-width: 1200px) {
-      .sidebar {
-        display: none !important;
-      }
-      .wrapper {
-        display: block;
-      }
-      .container {
-        max-width: 100%;
-      }
+      .sidebar { display: none !important; }
+      .wrapper { display: block; }
+      .container { max-width: 100%; }
     }
 
     @media (max-width: 640px) {
@@ -298,6 +370,12 @@
       .blog-section { padding: 15px; }
       .post-card-mini { flex: 0 0 140px; }
       .post-thumb-wrapper-mini { height: 95px; }
+      .adsense-box { 
+        padding: 12px; 
+        font-size: 12px; 
+        min-height: 70px;
+        margin-bottom: 18px;
+      }
     }
   </style>
 </head>
@@ -305,16 +383,35 @@
 
 <div class="wrapper">
 
-  <!-- [좌측 사이드바 - 단 1개만 배치] -->
+  <!-- [좌측 사이드바: 기능성 위젯 (PC용)] -->
   <aside class="sidebar">
-    <h3 class="sidebar-title">📌 안내</h3>
-    <p class="sidebar-text">매일 업데이트되는 실생활 꿀팁과 정보, 상품 리뷰를 한눈에 확인해보세요.</p>
+    <div class="widget-box">
+      <h3 class="widget-title">📌 안내</h3>
+      <p class="widget-text">매일 새롭게 업데이트되는 실생활 정보와 리뷰를 한눈에 둘러보세요.</p>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">🕒 실시간 시계</h3>
+      <div id="clock-time" class="clock-time">00:00:00</div>
+      <div id="clock-date" class="clock-date">2026년 0월 0일 (월)</div>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">☀️ 실시간 날씨</h3>
+      <div class="weather-info">
+        <div id="weather-temp" class="weather-temp">--°C</div>
+        <div class="weather-sub">
+          <div id="weather-status">불러오는 중...</div>
+          <div id="weather-dust" style="margin-top: 2px;">미세먼지: --</div>
+        </div>
+      </div>
+    </div>
   </aside>
 
-  <!-- [메인 콘텐츠 영역 - 단 1개만 배치] -->
+  <!-- [메인 콘텐츠 영역 (PC/모바일 공통)] -->
   <main class="container">
 
-    <!-- [상단 광고] -->
+    <!-- [상단 애드센스 광고 영역 - PC/모바일 모두 노출] -->
     <div class="adsense-box">
       📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
     </div>
@@ -352,34 +449,132 @@
       </div>
     </div>
 
-    <!-- [하단 광고] -->
+    <!-- [하단 애드센스 광고 영역 - PC/모바일 모두 노출] -->
     <div class="adsense-box">
       📢 광고 영역 (구글 애드센스 승인 후 배너 노출)
     </div>
 
   </main>
 
-  <!-- [우측 사이드바 - 단 1개만 배치] -->
+  <!-- [우측 사이드바: 기능성 위젯 (PC용)] -->
   <aside class="sidebar">
-    <h3 class="sidebar-title">🔥 인기 태그</h3>
-    <ul class="tag-list">
-      <li class="tag-item">#생활꿀팁</li>
-      <li class="tag-item">#제품리뷰</li>
-      <li class="tag-item">#최신트렌드</li>
-      <li class="tag-item">#이슈모음</li>
-      <li class="tag-item">#IT정보</li>
-    </ul>
+    <div class="widget-box">
+      <h3 class="widget-title">🔍 포스트 검색</h3>
+      <div class="search-input-box">
+        <input type="text" id="search-input" class="search-input" placeholder="글 제목 키워드 입력..." onkeyup="filterPosts()">
+      </div>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">🔥 빠른 태그 검색</h3>
+      <ul class="tag-list">
+        <li class="tag-item" onclick="searchTag('세차')">#세차</li>
+        <li class="tag-item" onclick="searchTag('우회')">#우회</li>
+        <li class="tag-item" onclick="searchTag('애플')">#애플</li>
+        <li class="tag-item" onclick="searchTag('삼성')">#삼성</li>
+        <li class="tag-item" onclick="searchTag('이슈')">#이슈</li>
+        <li class="tag-item" onclick="searchTag('')">🔄 전체보기</li>
+      </ul>
+    </div>
+
+    <div class="widget-box">
+      <h3 class="widget-title">💡 오늘의 꿀팁</h3>
+      <div id="random-tip" class="tip-box">
+        유용한 팁을 불러오는 중...
+      </div>
+    </div>
   </aside>
 
 </div>
 
 <script>
+  let allPostsData = [];
+
   window.onload = function() {
+    startClock();
+    fetchWeather();
+    showRandomTip();
+
     loadBlogRSS('blogforyou_', 'posts-blog1');
     loadBlogRSS('727--', 'posts-blog2');
     loadBlogRSS('tip-foryou', 'posts-blog3');
   };
 
+  /* 1. 시계 위젯 */
+  function startClock() {
+    function update() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayName = days[now.getDay()];
+
+      document.getElementById('clock-time').innerText = `${hours}:${minutes}:${seconds}`;
+      document.getElementById('clock-date').innerText = `${year}년 ${month}월 ${date}일 (${dayName})`;
+    }
+    update();
+    setInterval(update, 1000);
+  }
+
+  /* 2. 날씨 API */
+  function fetchWeather() {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true';
+    const airUrl = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=37.5665&longitude=126.9780&current=pm10,pm2_5';
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          document.getElementById('weather-temp').innerText = `${temp}°C`;
+          
+          let statusText = '맑음 ☀️';
+          if (code >= 1 && code <= 3) statusText = '구름조금 ⛅';
+          else if (code >= 45 && code <= 48) statusText = '안개 🌫️';
+          else if (code >= 51 && code <= 67) statusText = '비 🌧️';
+          else if (code >= 71) statusText = '눈 ❄️';
+
+          document.getElementById('weather-status').innerText = statusText;
+        }
+      }).catch(() => {
+        document.getElementById('weather-status').innerText = '날씨 정보 오류';
+      });
+
+    fetch(airUrl)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.current) {
+          const pm10 = data.current.pm10;
+          let dustGrade = '보통 🟡';
+          if (pm10 <= 30) dustGrade = '좋음 🟢';
+          else if (pm10 > 80) dustGrade = '나쁨 🔴';
+          
+          document.getElementById('weather-dust').innerText = `미세먼지: ${dustGrade}`;
+        }
+      }).catch(() => {});
+  }
+
+  /* 3. 오늘의 꿀팁 */
+  function showRandomTip() {
+    const tips = [
+      "전자레인지 청소 시 물과 귤껍질을 함께 넣고 2분 돌려주세요.",
+      "옷에 묻은 볼펜 자국은 물파스로 지우면 깔끔하게 제거됩니다.",
+      "냉장고 냄새 제거에는 쓴 원두커피 가루가 효과적입니다.",
+      "스티커 자국은 선크림이나 아세톤을 발라 문지르면 쉽게 떨어집니다.",
+      "수건은 섬유유연제를 쓰지 않고 빨아야 흡수력이 오래 유지됩니다."
+    ];
+    const randomIndex = Math.floor(Math.random() * tips.length);
+    document.getElementById('random-tip').innerText = tips[randomIndex];
+  }
+
+  /* 4. RSS 불러오기 */
   function loadBlogRSS(blogId, containerId) {
     const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
     const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
@@ -399,15 +594,11 @@
 
         posts.forEach(post => {
           let imageUrl = '';
-          if (post.thumbnail) {
-            imageUrl = post.thumbnail;
-          } else if (post.enclosure && post.enclosure.link) {
-            imageUrl = post.enclosure.link;
-          } else {
+          if (post.thumbnail) imageUrl = post.thumbnail;
+          else if (post.enclosure && post.enclosure.link) imageUrl = post.enclosure.link;
+          else {
             const imgMatch = post.description.match(/<img[^>]+src=["']([^"']+)["']/i);
-            if (imgMatch && imgMatch[1]) {
-              imageUrl = imgMatch[1];
-            }
+            if (imgMatch && imgMatch[1]) imageUrl = imgMatch[1];
           }
 
           if (imageUrl && (imageUrl.includes('postfiles.naver.net') || imageUrl.includes('blogfiles.naver.net'))) {
@@ -417,8 +608,18 @@
           const pubDate = new Date(post.pubDate);
           const formattedDate = `${pubDate.getFullYear()}.${pubDate.getMonth() + 1}.${pubDate.getDate()}`;
 
+          allPostsData.push({
+            title: post.title,
+            containerId: containerId,
+            element: null,
+            link: post.link,
+            imageUrl: imageUrl,
+            date: formattedDate
+          });
+
           const card = document.createElement('div');
           card.className = 'post-card-mini';
+          card.setAttribute('data-title', post.title.toLowerCase());
           card.onclick = () => window.open(post.link, '_blank');
 
           card.innerHTML = `
@@ -433,10 +634,31 @@
           container.appendChild(card);
         });
       })
-      .catch(err => {
+      .catch(() => {
         const container = document.getElementById(containerId);
         container.innerHTML = '<div class="loading">불러오기 실패</div>';
       });
+  }
+
+  /* 5. 검색 및 태그 필터 */
+  function filterPosts() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.post-card-mini');
+
+    cards.forEach(card => {
+      const title = card.getAttribute('data-title') || '';
+      if (title.includes(query)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function searchTag(keyword) {
+    const searchInput = document.getElementById('search-input');
+    searchInput.value = keyword;
+    filterPosts();
   }
 </script>
 
