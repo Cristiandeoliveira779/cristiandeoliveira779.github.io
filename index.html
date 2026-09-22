@@ -867,10 +867,12 @@
     renderTip();
   }
 
-  /* 6. RSS 불러오기 */
+/* 6. RSS 불러오기 (캐시 방지 적용) */
   function loadBlogRSS(blogId, containerId) {
-    const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    // 💡 URL 뒤에 현재 시간을 붙여서 캐시를 무력화시킵니다.
+    const cacheBuster = new Date().getTime();
+    const rssUrl = `https://rss.blog.naver.com/${blogId}.xml?v=${cacheBuster}`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&_=${cacheBuster}`;
 
     fetch(apiUrl)
       .then(res => res.json())
