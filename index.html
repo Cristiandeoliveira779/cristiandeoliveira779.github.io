@@ -80,7 +80,7 @@
             align-items: start;
         }
 
-        /* 왼쪽 사이드바: 내 블로그 썸네일 링크 영역 (스크롤바/드래그바 적용) */
+        /* 왼쪽 사이드바: 내 블로그 썸네일 링크 영역 (스크롤바 적용) */
         .left-sidebar {
             background: var(--card-bg);
             padding: 1.2rem;
@@ -88,7 +88,7 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.04);
             border: 1px solid #edf2f7;
             
-            /* 스크롤바(드래그바) 설정 추가 */
+            /* 스크롤바/드래그바 설정 */
             max-height: 80vh;
             overflow-y: auto;
             position: sticky;
@@ -443,43 +443,34 @@
     </header>
 
     <div class="container">
-        <!-- 왼쪽 사이드바: 드래그바/스크롤바가 적용된 블로그 링크 영역 -->
+        <!-- 왼쪽 사이드바: 내 블로그 3개 링크 반영 -->
         <aside class="left-sidebar">
             <h3>추천 블로그</h3>
             
-            <!-- 블로그 1 -->
-            <a href="https://blog.naver.com" target="_blank" rel="noopener noreferrer" class="blog-link-card">
-                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&auto=format&fit=crop&q=80" alt="IT 테크 블로그 썸네일" class="blog-thumbnail">
+            <!-- 블로그 1: tip-foryou (최신글: 자동차보험 관련) -->
+            <a href="https://blog.naver.com/tip-foryou" target="_blank" rel="noopener noreferrer" class="blog-link-card">
+                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=300&auto=format&fit=crop&q=80" alt="Tip For You 썸네일" class="blog-thumbnail">
                 <div class="blog-info">
-                    <div class="blog-name">IT·테크 정보 라운지</div>
-                    <div class="blog-desc">최신 스마트폰, AI 및 IT 소식 모음</div>
+                    <div class="blog-name">Tip For You</div>
+                    <div class="blog-desc">자동차보험 & 라이프 절세 꿀팁 정보 모음</div>
                 </div>
             </a>
 
-            <!-- 블로그 2 -->
-            <a href="https://tistory.com" target="_blank" rel="noopener noreferrer" class="blog-link-card">
-                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=300&auto=format&fit=crop&q=80" alt="재테크 블로그 썸네일" class="blog-thumbnail">
+            <!-- 블로그 2: blogforyou_ (최신글: 스마트폰 구매 관련) -->
+            <a href="https://blog.naver.com/blogforyou_" target="_blank" rel="noopener noreferrer" class="blog-link-card">
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&auto=format&fit=crop&q=80" alt="Blog For You 썸네일" class="blog-thumbnail">
                 <div class="blog-info">
-                    <div class="blog-name">스마트 재테크 노트</div>
-                    <div class="blog-desc">주식, 환율 및 절세 라이프 가이드</div>
+                    <div class="blog-name">Blog For You</div>
+                    <div class="blog-desc">아이폰 및 스마트폰 싸게 사는 법 리뷰</div>
                 </div>
             </a>
 
-            <!-- 블로그 3 -->
-            <a href="https://velog.io" target="_blank" rel="noopener noreferrer" class="blog-link-card">
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=300&auto=format&fit=crop&q=80" alt="라이프 꿀팁 블로그 썸네일" class="blog-thumbnail">
+            <!-- 블로그 3: 727-- (최신글: 누누티비 / 미디어 이슈 관련) -->
+            <a href="https://blog.naver.com/727--" target="_blank" rel="noopener noreferrer" class="blog-link-card">
+                <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=300&auto=format&fit=crop&q=80" alt="727 블로그 썸네일" class="blog-thumbnail">
                 <div class="blog-info">
-                    <div class="blog-name">데일리 라이프 픽</div>
-                    <div class="blog-desc">일상 꿀팁과 건강/생활 정보 정리</div>
-                </div>
-            </a>
-
-            <!-- 블로그 4 (스크롤 시연을 위한 추가 아이템) -->
-            <a href="https://medium.com" target="_blank" rel="noopener noreferrer" class="blog-link-card">
-                <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=300&auto=format&fit=crop&q=80" alt="트렌드 인사이트 썸네일" class="blog-thumbnail">
-                <div class="blog-info">
-                    <div class="blog-name">트렌드 인사이트</div>
-                    <div class="blog-desc">글로벌 테크 트렌드와 미디어 소식</div>
+                    <div class="blog-name">트렌드 & 이슈 727</div>
+                    <div class="blog-desc">최신 웹 트렌드 및 미디어 이슈 정리</div>
                 </div>
             </a>
         </aside>
